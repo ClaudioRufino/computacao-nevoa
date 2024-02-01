@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "16031622206",
+    "project_id": "instic-inscricao",
+    "storage_bucket": "instic-inscricao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16031622206:android:974a3f2e4eba8ee0289d6f",
+        "android_client_info": {
+          "package_name": "com.example.assincrono"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn2VJKuHhCYquyVPfiyJfsVN1CbHZuTKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16031622206:android:6291f423ff1aff13289d6f",
+        "android_client_info": {
+          "package_name": "instic.com.sistema_inscricao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn2VJKuHhCYquyVPfiyJfsVN1CbHZuTKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
