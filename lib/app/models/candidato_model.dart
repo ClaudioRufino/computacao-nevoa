@@ -6,22 +6,25 @@ class Candidato extends User {
   late String nomePai;
   late String nomeMae;
   late String escola;
-  late double media;
+  late int media;
+  late String certificado;
   late String emitidoEm;
   late double anoConclusaoMedio;
+  late List<String> curso;
 
-  Candidato._({
-    required super.nome,
-    required super.email,
-    required super.senha,
-    required this.genero,
-    required this.escola,
-    required this.media,
-    required this.emitidoEm,
-    required this.nomePai,
-    required this.nomeMae,
-    required this.dataNascimento,
-  });
+  Candidato._(
+      {required super.nome,
+      required super.email,
+      required super.senha,
+      required this.genero,
+      required this.escola,
+      required this.media,
+      required this.emitidoEm,
+      required this.nomePai,
+      required this.nomeMae,
+      required this.certificado,
+      required this.dataNascimento,
+      required this.curso});
 
   static final Candidato instancia = Candidato._(
     nome: 'nome',
@@ -29,10 +32,12 @@ class Candidato extends User {
     senha: 'senha',
     genero: 'genero',
     escola: 'escola',
-    media: 0.0,
+    media: 0,
     nomePai: 'nomePai',
     nomeMae: 'nomeMae',
+    certificado: '',
     emitidoEm: 'emitido',
+    curso: [],
     dataNascimento: 'dataNascimento',
   );
 
@@ -52,7 +57,7 @@ class Candidato extends User {
     return escola;
   }
 
-  double getMedia() {
+  int getMedia() {
     return media;
   }
 
@@ -66,6 +71,10 @@ class Candidato extends User {
 
   String getEmitido() {
     return emitidoEm;
+  }
+
+  String getCertificado() {
+    return certificado;
   }
 
   String getDataNascimento() {
@@ -88,7 +97,7 @@ class Candidato extends User {
     this.escola = escola;
   }
 
-  setMedia(double valor) {
+  setMedia(int valor) {
     media = valor;
   }
 
@@ -106,5 +115,40 @@ class Candidato extends User {
 
   void setEmitido(String emitido) {
     emitidoEm = emitido;
+  }
+
+  void setCertificado(String valor) {
+    certificado = valor;
+  }
+
+  List<String> getCurso() {
+    return curso;
+  }
+
+  void setCurso(String valor) {
+    curso.add(valor);
+  }
+
+  void eliminarCursos() {
+    curso = [];
+  }
+
+  int totalCurso() {
+    return getCurso().length;
+  }
+
+  void reiniciar() {
+    nome = 'nome';
+    email = 'email';
+    senha = 'senha';
+    genero = 'genero';
+    escola = 'escola';
+    media = 0;
+    nomePai = 'nomePai';
+    nomeMae = 'nomeMae';
+    certificado = '';
+    emitidoEm = 'emitido';
+    curso = [];
+    dataNascimento = 'dataNascimento';
   }
 }

@@ -63,19 +63,47 @@ class CandidatoController {
     Candidato.instancia.setEscola(escola);
   }
 
-  getEscola() {
-    Candidato.instancia.getEscola();
+  String getEscola() {
+    return Candidato.instancia.getEscola();
   }
 
-  setMedia(double valor) {
+  setMedia(int valor) {
     Candidato.instancia.setMedia(valor);
   }
 
-  getMedia() {
-    Candidato.instancia.getMedia();
+  int getMedia() {
+    return Candidato.instancia.getMedia();
   }
 
   String listar() {
     return Candidato.instancia.getNome();
+  }
+
+  setCurso(String valor) {
+    Candidato.instancia.setCurso(valor);
+  }
+
+  List<String> getCurso() {
+    return Candidato.instancia.getCurso();
+  }
+
+  setCertificado(String valor) {
+    Candidato.instancia.setCertificado(valor);
+  }
+
+  String getCertificado() {
+    return Candidato.instancia.getCertificado();
+  }
+
+  void eliminarCurso() {
+    Candidato.instancia.eliminarCursos();
+  }
+
+  int totalCurso() {
+    return Candidato.instancia.totalCurso();
+  }
+
+  void reiniciar() {
+    Candidato.instancia.reiniciar();
   }
 }

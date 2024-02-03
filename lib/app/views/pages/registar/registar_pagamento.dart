@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
-import 'package:sistema_inscricao/app/servicos/estado_global.dart';
-import 'package:sistema_inscricao/app/views/components/mensagem_erro.dart';
+import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
+import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
-// import 'package:sistema_inscricao/app/views/pages/registar/registar_pagamento.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 
 class RegistarPagamento extends StatefulWidget {
   const RegistarPagamento({super.key});
@@ -15,267 +14,307 @@ class RegistarPagamento extends StatefulWidget {
 }
 
 class _RegistarPagamentoState extends State<RegistarPagamento> {
+  var candidatoController = CandidatoController();
+  var caminhoFile = 'Formato permitido - PDF';
+  int valorInscricao = 0;
+  ValueNotifier<bool> sucesso = ValueNotifier<bool>(false);
+
+  void selecionarArquivo() async {
+    // ignore: avoid_print
+    print('Clicou em mim');
+    FilePickerResult? resultado = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (resultado != null) {
+      setState(() {
+        caminhoFile = resultado.files.single.path ?? '';
+        caminhoFile = caminhoFile.substring(60);
+      });
+    } else {
+      // ignore: avoid_print
+      print('Caminho Nulo');
+    }
+  }
+
   @override
   build(BuildContext context) {
     var emailController = TextEditingController();
 
+    // valorInscricao = candidatoController.totalCurso();
+    int valorInscricao = candidatoController.totalCurso() == 2 ? 8000 : 4000;
+
     // var keyFormPesquisar = GlobalKey<FormState>();
     var keyFormDadosAutenticar = GlobalKey<FormState>();
-    var caminhoFile = 'Formato permitido - PDF';
-
-    void selecionarArquivo() async {
-      FilePickerResult? resultado = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
-
-      if (resultado != null) {
-        setState(() {
-          caminhoFile = resultado.files.single.path ?? 'Ola';
-          // ignore: avoid_print
-          print("Peguei: $caminhoFile");
-        });
-      }
-    }
 
     return AnimatedBuilder(
-        animation: EstadoGlobal.estadoGlobal,
-        builder: (context, child) {
-          return Scaffold(
+      animation: sucesso,
+      builder: (context, child) => PopScope(
+        onPopInvoked: (value) {
+          // ignore: avoid_print
+          print('Clicou em Voltar');
+          candidatoController.eliminarCurso();
+        },
+        child: Scaffold(
+          backgroundColor: const Color.fromARGB(255, 24, 56, 97),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: Container(
-                  height: 40,
-                  color: Colors.white,
-                  child: Image.asset(
-                    'images/logo.png',
-                  ),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Container(
+                height: 40,
+                color: Colors.white,
+                child: Image.asset(
+                  'images/logo.png',
                 ),
               ),
-              actions: const [
-                Icon(
-                  Icons.login,
-                  color: Colors.white,
-                )
-              ],
-              title: Text(
-                'Inscrição-2024',
-                style: GoogleFonts.ubuntu(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white),
-              ),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 10,
-                  ),
-                  const Menu(
-                    menuItem: [
-                      MenuItem(
-                          selecionado: false,
-                          texto: 'Pessoal',
-                          icon: Icons.person_2_sharp),
-                      MenuItem(
-                          selecionado: false,
-                          texto: 'Formação',
-                          icon: Icons.school),
-                      MenuItem(
-                          selecionado: true,
-                          texto: 'Pagamento',
-                          icon: Icons.payment),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      if (EstadoGlobal.estadoGlobal.getMensagemErro())
-                        StreamBuilder<int>(
-                          stream: tempo(),
-                          builder: (context, AsyncSnapshot<int> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                                // ignore: avoid_print
-                                print('Encontrado valor nulo');
-                                return Container();
-                              case ConnectionState.waiting:
-                                // ignore: avoid_print
-                                print('Esperando');
-                                return const MensagemErro(
-                                    texto:
-                                        'Candidato não encontrado. Pesquise com o seu B.I');
-                              case ConnectionState.active:
-                                // ignore: avoid_print
-                                return const MensagemErro(
-                                    texto:
-                                        'Candidato não encontrado. Pesquise com o seu B.I');
-                              case ConnectionState.done:
-                                // ignore: avoid_print
-                                print('Terminado');
-                            }
-                            return Container();
-                          },
-                        ),
-                      Container(
-                        height: 30,
+            actions: const [
+              Icon(
+                Icons.login,
+                color: Colors.white,
+              )
+            ],
+            title: Text(
+              'Inscrição-2024',
+              style: GoogleFonts.ubuntu(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white),
+            ),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  height: 10,
+                ),
+                const Menu(
+                  menuItem: [
+                    MenuItem(
+                        selecionado: false,
+                        texto: 'Pessoal',
+                        icon: Icons.person_2_sharp),
+                    MenuItem(
+                        selecionado: false,
+                        texto: 'Formação',
+                        icon: Icons.school),
+                    MenuItem(
+                        selecionado: true,
+                        texto: 'Pagamento',
+                        icon: Icons.payment),
+                  ],
+                ),
+                Column(
+                  children: [
+                    // if (sucesso.value)
+
+                    Container(
+                      height: 30,
+                    ),
+                    const SizedBox(height: 5),
+                    Container(
+                      height: 10,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40))),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
                       ),
-                      const SizedBox(height: 5),
-                      Container(
-                        height: 10,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40))),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        width: double.infinity,
-                        // color: Colors.white,
-                        child: Form(
-                          key: keyFormDadosAutenticar,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 400.0,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    color: const Color.fromRGBO(138, 67, 9, 1),
-                                  ),
-                                  child: const Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Valor a Pagar -> 6000kz',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
+                      width: double.infinity,
+                      // color: Colors.white,
+                      child: Form(
+                        key: keyFormDadosAutenticar,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 40),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: const Color.fromARGB(255, 33, 73, 126),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Total a pagar -> $valorInscricao kz",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: 'sans-serif'),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: selecionarArquivo,
-                                // onPressed: () {},
-                                child: const Text(
-                                    'Carregar comprovativo do pagamento'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  readOnly: true,
-                                  controller: emailController,
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Campo de email não pode estar vazio.";
-                                    } else if (!value.contains('@') ||
-                                        !value.contains('.')) {
-                                      return 'Coloque no formato de email. ex.:claudio@gmail.com';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    prefixIcon: const Icon(
-                                      Icons.file_copy,
-                                      size: 16,
+                            ),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: selecionarArquivo,
+                              child: const Text(
+                                  'Carregar comprovativo do pagamento'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: emailController,
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Campo de email não pode estar vazio.";
+                                  } else if (!value.contains('@') ||
+                                      !value.contains('.')) {
+                                    return 'Coloque no formato de email. ex.:claudio@gmail.com';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.file_copy,
+                                    size: 16,
+                                    color: Colors.blue,
+                                  ),
+                                  hintText: caminhoFile,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  hintStyle: GoogleFonts.quicksand(
+                                      color: Colors.blue,
+                                      fontStyle: FontStyle.italic),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
                                       color: Colors.blue,
                                     ),
-                                    hintText: caminhoFile,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
-                                      borderRadius: _bordasRedonda(),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
+                                  ),
+                                  // errorBorder: _erroBorda(),
+                                  focusedErrorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
                                     ),
                                   ),
                                 ),
                               ),
-                              ListTile(
-                                trailing: ElevatedButton.icon(
-                                  onPressed: () {
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         const RegistarPagamento(),
-                                    //   ),
-                                    // );
-                                    // ignore: avoid_print
-                                    print('Inscrição realizada com sucesso');
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
-                                  label: const Text(
-                                    'Finalizar Inscrição',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromRGBO(138, 67, 9, 1),
-                                  ),
+                            ),
+                            ListTile(
+                              trailing: ElevatedButton.icon(
+                                onPressed: () {
+                                  String escola =
+                                      candidatoController.getEscola();
+                                  // ignore: avoid_print
+                                  print(escola);
+
+                                  int media = candidatoController.getMedia();
+                                  // ignore: avoid_print
+                                  print('Media: $media');
+                                  // ignore: avoid_print
+
+                                  String certificado =
+                                      candidatoController.getCertificado();
+                                  //ignore: avoid_print
+                                  print('Certificado: $certificado');
+                                  // ignore: avoid_print
+                                  print(['1', '2']);
+                                  // ignore: avoid_print
+
+                                  sucesso.value = !sucesso.value;
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                ),
+                                label: const Text(
+                                  'Finalizar Inscrição',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromRGBO(138, 67, 9, 1),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(height: 20),
+                    Visibility(
+                      visible: sucesso.value,
+                      child: StreamBuilder<int>(
+                        stream: tempo(),
+                        builder: (context, AsyncSnapshot<int> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                              // ignore: avoid_print
+                              print('Encontrado valor nulo');
+                              return Container();
+                            case ConnectionState.waiting:
+                              // ignore: avoid_print
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            case ConnectionState.active:
+                              // ignore: avoid_print
+                              return const Mensagem(
+                                cor: Color.fromRGBO(138, 67, 9, 1),
+                                texto: 'Inscrição realizada com sucesso!',
+                              );
+                            case ConnectionState.done:
+                              // ignore: avoid_print
+                              print('Terminado');
+                              return Center(
+                                  child: GestureDetector(
+                                onTap: () {
+                                  // ignore: avoid_print
+                                  print('Faça qualquer coisa');
+                                },
+                                child: ElevatedButton(
+                                  child: const Text(
+                                    'Páginal de login',
+                                    style: TextStyle(
+                                        // color: Colors.white,
+                                        ),
+                                  ),
+                                  onPressed: () {
+                                    candidatoController.reiniciar();
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    );
+                                    // ignore: avoid_print
+                                    // print('Clicou em mim');
+                                  },
+                                ),
+                              ));
+                          }
+                          // return Container();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
-}
-
-InputBorder _erroBorda() {
-  return OutlineInputBorder(
-    borderSide: const BorderSide(
-      color: Colors.red,
-    ),
-    borderRadius: _bordasRedonda(),
-  );
-}
-
-BorderRadius _bordasRedonda() {
-  return const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-      bottomLeft: Radius.circular(20),
-      bottomRight: Radius.circular(20));
 }
 
 Stream<int> tempo() async* {
   int i;
-  for (i = 0; i < 2; i++) {
+  for (i = 0; i < 3; i++) {
     await Future.delayed(const Duration(seconds: 1));
     yield i;
   }

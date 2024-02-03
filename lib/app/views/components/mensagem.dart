@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MensagemErro extends StatefulWidget {
+class Mensagem extends StatefulWidget {
   final String texto;
-  const MensagemErro({super.key, required this.texto});
+  final Color cor;
+  const Mensagem({super.key, required this.texto, required this.cor});
 
   @override
-  State<MensagemErro> createState() => _MensagemErroState();
+  State<Mensagem> createState() => _MensagemState();
 }
 
-class _MensagemErroState extends State<MensagemErro> {
+class _MensagemState extends State<Mensagem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +17,8 @@ class _MensagemErroState extends State<MensagemErro> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 173, 17, 17),
+          color: widget.cor,
+          // color: const Color.fromARGB(255, 173, 17, 17),
         ),
         width: double.infinity,
         height: 50,

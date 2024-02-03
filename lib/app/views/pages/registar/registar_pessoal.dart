@@ -4,7 +4,7 @@ import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:sistema_inscricao/app/models/dados_pessoal/pessoal.dart';
 import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
 import 'package:sistema_inscricao/app/servicos/estado_global.dart';
-import 'package:sistema_inscricao/app/views/components/mensagem_erro.dart';
+import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_formacao.dart';
 
@@ -103,12 +103,14 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                               case ConnectionState.waiting:
                                 // ignore: avoid_print
                                 print('Esperando');
-                                return const MensagemErro(
+                                return const Mensagem(
+                                    cor: Color.fromARGB(255, 173, 17, 17),
                                     texto:
                                         'Candidato não encontrado. Pesquise com o seu B.I');
                               case ConnectionState.active:
                                 // ignore: avoid_print
-                                return const MensagemErro(
+                                return const Mensagem(
+                                    cor: Color.fromARGB(255, 173, 17, 17),
                                     texto:
                                         'Candidato não encontrado. Pesquise com o seu B.I');
                               case ConnectionState.done:
@@ -247,42 +249,6 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                       color: Colors.blue,
                                     ),
                                     hintText: 'Nome',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
-                                      borderRadius: _bordasRedonda(),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  readOnly: true,
-                                  controller: dataNascimentoController,
-                                  decoration: InputDecoration(
-                                    prefixIcon: const Icon(
-                                      Icons.calendar_today,
-                                      size: 16,
-                                      color: Colors.blue,
-                                    ),
-                                    hintText: 'Data de Nascimento',
                                     contentPadding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     hintStyle: GoogleFonts.quicksand(
@@ -559,7 +525,7 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                   onPressed: () {
                                     EstadoGlobal.estadoGlobal
                                         .setMensagemErro(false);
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             const RegistarFormacao(),
@@ -580,9 +546,9 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     candidatoController
                                         .setSenha(senhaController.text);
                                     // ignore: avoid_print
-                                    print(
-                                      'Segundo nome é: ${candidatoController.getNome()}',
-                                    );
+                                    // print(
+                                    //   'Segundo nome é: ${candidatoController.getNome()}',
+                                    // );
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward,

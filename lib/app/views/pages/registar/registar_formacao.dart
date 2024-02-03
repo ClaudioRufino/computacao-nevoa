@@ -4,9 +4,10 @@ import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:sistema_inscricao/app/controller/registar/formacao_controller.dart';
 // import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
 import 'package:sistema_inscricao/app/servicos/estado_global.dart';
-import 'package:sistema_inscricao/app/views/components/mensagem_erro.dart';
+import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_pagamento.dart';
+import 'package:file_picker/file_picker.dart';
 
 class RegistarFormacao extends StatefulWidget {
   const RegistarFormacao({super.key});
@@ -41,14 +42,38 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
 
   /* Instanciar a classe FormacaoController */
   var formacaoController = FormacaoController();
+  var candidatoController = CandidatoController();
+
+  var caminhoFile = 'Formato permitido - PDF';
+  void selecionarArquivo() async {
+    // ignore: avoid_print
+    print('Clicou em mim');
+    FilePickerResult? resultado = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (resultado != null) {
+      setState(() {
+        caminhoFile = resultado.files.single.path ?? '';
+        candidatoController.setCertificado(caminhoFile);
+        caminhoFile = caminhoFile.substring(60);
+      });
+    } else {
+      // ignore: avoid_print
+      print('Caminho Nulo');
+    }
+  }
+
+  String curso1 = '';
+  String curso2 = '';
 
   @override
   Widget build(BuildContext context) {
-    var dataNascimentoController = TextEditingController();
+    var emailController = TextEditingController();
 
     // var keyFormPesquisar = GlobalKey<FormState>();
     var keyFormDadosFormacao = GlobalKey<FormState>();
-
     var candidatoController = CandidatoController();
 
     return AnimatedBuilder(
@@ -119,12 +144,14 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                               case ConnectionState.waiting:
                                 // ignore: avoid_print
                                 print('Esperando');
-                                return const MensagemErro(
+                                return const Mensagem(
+                                    cor: Color.fromARGB(255, 173, 17, 17),
                                     texto:
                                         'Candidato não encontrado. Pesquise com o seu B.I');
                               case ConnectionState.active:
                                 // ignore: avoid_print
-                                return const MensagemErro(
+                                return const Mensagem(
+                                    cor: Color.fromARGB(255, 173, 17, 17),
                                     texto:
                                         'Candidato não encontrado. Pesquise com o seu B.I');
                               case ConnectionState.done:
@@ -218,18 +245,31 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                   },
                                 ),
                               ),
+                              ElevatedButton(
+                                onPressed: selecionarArquivo,
+                                child: const Text('Carregar Certificado'),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
                                   readOnly: true,
-                                  controller: dataNascimentoController,
+                                  controller: emailController,
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Campo de email não pode estar vazio.";
+                                    } else if (!value.contains('@') ||
+                                        !value.contains('.')) {
+                                      return 'Coloque no formato de email. ex.:claudio@gmail.com';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     prefixIcon: const Icon(
-                                      Icons.calendar_today,
+                                      Icons.file_copy,
                                       size: 16,
                                       color: Colors.blue,
                                     ),
-                                    hintText: 'Data de Nascimento',
+                                    hintText: caminhoFile,
                                     contentPadding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     hintStyle: GoogleFonts.quicksand(
@@ -288,6 +328,15 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                       )
                                       .toList(),
                                   onChanged: (value) {
+                                    // ignore: avoid_print
+                                    // print('Curso selecionado: $value');
+                                    if (value != 'Selecione o curso') {
+                                      curso1 = value!;
+                                    }
+                                    // ignore: avoid_print
+                                    // print(
+                                    //     "Curso selecionado: $candidatoController.getCurso()");
+
                                     setState(() {
                                       selectCurso = value!;
                                     });
@@ -328,6 +377,7 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                         formacaoController.setUmaOpcao();
                                         formacaoController.setDuasOpcoes();
                                         formacaoController.setOpcao();
+                                        curso2 = '';
                                       } else if (selectOpcaoCurso ==
                                               'Duas opções' &&
                                           formacaoController.duasOpcoes ==
@@ -369,6 +419,9 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                         )
                                         .toList(),
                                     onChanged: (value) {
+                                      if (value != 'Selecione Segundo Curso') {
+                                        curso2 = value!;
+                                      }
                                       setState(() {
                                         selectSegundaOpcao = value!;
                                         // ignore: avoid_print
@@ -382,12 +435,22 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                 trailing: ElevatedButton.icon(
                                   onPressed: () {
                                     candidatoController.setEscola(selectEscola);
-                                    // candidatoController
-                                    //     .setMedia(double.parse(selectMedia));
+                                    candidatoController
+                                        .setMedia(int.parse(selectMedia));
 
                                     // ignore: avoid_print
-                                    print(selectMedia);
-                                    Navigator.of(context).push(
+                                    if (curso1 != '' &&
+                                        curso1 != 'Selecione o curso') {
+                                      candidatoController.setCurso(curso1);
+                                    }
+                                    if (curso2 != '' &&
+                                        curso2 != 'Selecione Segundo Curso') {
+                                      candidatoController.setCurso(curso2);
+                                    }
+
+                                    // ignore: avoid_print
+                                    print(candidatoController.totalCurso());
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             const RegistarPagamento(),
