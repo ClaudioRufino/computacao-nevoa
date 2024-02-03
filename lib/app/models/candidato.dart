@@ -1,4 +1,4 @@
-import 'package:sistema_inscricao/app/models/user_model.dart';
+import 'package:sistema_inscricao/app/models/usuario.dart';
 
 class Candidato extends User {
   late String dataNascimento;

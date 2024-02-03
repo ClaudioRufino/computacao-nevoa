@@ -1,4 +1,4 @@
-import 'package:sistema_inscricao/app/models/candidato_model.dart';
+import 'package:sistema_inscricao/app/models/candidato.dart';
 
 class CandidatoController {
   CandidatoController();

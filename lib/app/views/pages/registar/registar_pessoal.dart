@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
-import 'package:sistema_inscricao/app/models/dados_pessoal/pessoal.dart';
+import 'package:sistema_inscricao/app/models/pessoal.dart';
 import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
 import 'package:sistema_inscricao/app/servicos/estado_global.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';

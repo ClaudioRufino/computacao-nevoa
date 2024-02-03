@@ -1,6 +1,6 @@
 // import 'dart:convert';
 
-import 'package:sistema_inscricao/app/models/dados_pessoal/pessoal.dart';
+import 'package:sistema_inscricao/app/models/pessoal.dart';
 // import 'package:http/http.dart' as http;
 
 class DadosPessoaisAPI {
