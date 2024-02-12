@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 // import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 // import 'package:sistema_inscricao/app/views/components/input.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
@@ -262,13 +263,18 @@ class _LoginPageState extends State<LoginPage> {
                               //     email: _emailController.text,
                               //     senha: _senhaController.text);
 
-                              if (_keyForm.currentState!.validate()) {
-                                // ignore: avoid_print
-                                print('cadastrado com sucesso!');
-                              } else {
-                                // ignore: avoid_print
-                                print('Erro...');
-                              }
+                              // if (_keyForm.currentState!.validate()) {
+                              // ignore: avoid_print
+                              // print('cadastrado com sucesso!');
+                              // } else {
+                              // ignore: avoid_print
+                              // print('Erro...');
+                              // }
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const TelaPrincipal(),
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white),
