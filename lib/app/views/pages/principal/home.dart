@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/perfil.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/estado.dart';
+import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,6 +17,7 @@ class _HomeState extends State<Home> {
   final telas = [const Home(), const Perfil(), const Sobre()];
 
   int totalInscritos = 200;
+  final AutenticacaoServico _authServico = AutenticacaoServico();
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +30,39 @@ class _HomeState extends State<Home> {
             height: 90,
             alignment: Alignment.centerLeft,
             color: const Color.fromARGB(255, 24, 56, 97), //97
-            child: const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'INFORMAÇÕES GERAIS',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'INFORMAÇÕES GERAIS',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _authServico.sair();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
+                    },
+                    child: const Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+          const SizedBox(height: 20),
           Container(
-            width: 330,
+            width: 380,
             height: 60,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -82,8 +105,8 @@ class _HomeState extends State<Home> {
             color: Colors.white,
             alignment: Alignment.topCenter,
             child: Container(
-              width: 320,
-              height: 230,
+              width: 380,
+              height: 280,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
@@ -100,8 +123,10 @@ class _HomeState extends State<Home> {
               ),
               child: ListView(children: [
                 curso('Informática', 170, Icons.computer),
+                const SizedBox(height: 20),
                 curso('Telecomunicação', 10,
                     Icons.signal_wifi_statusbar_null_sharp),
+                const SizedBox(height: 20),
                 curso('Informática de Gestão', 170, Icons.computer_rounded),
               ]),
             ),

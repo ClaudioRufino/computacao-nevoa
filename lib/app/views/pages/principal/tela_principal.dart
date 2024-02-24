@@ -15,19 +15,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   final telas = [const Home(), const Sobre(), const Perfil()];
 
-  // String teste(int indice) {
-  //   switch (indice) {
-  //     case 0:
-  //       return "Bom";
-  //   }
-  //   return "oMeu";
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData.light(),
-      // color: const Color.fromARGB(255, 24, 56, 97),
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 24, 56, 97),
         body: IndexedStack(
@@ -50,7 +40,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 Icons.home,
                 color: Color.fromARGB(255, 24, 56, 97),
               ),
-              label: 'Home',
+              label: 'Inicio',
             ),
             BottomNavigationBarItem(
               icon: Icon(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
-// import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
+import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 // import 'package:sistema_inscricao/app/views/components/input.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
 
@@ -19,106 +19,128 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  // final AutenticacaoServico _authServico = AutenticacaoServico();
+  final AutenticacaoServico _authServico = AutenticacaoServico();
 
   final _keyForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-        appBar: AppBar(
+    return MaterialApp(
+      theme: ThemeData.light(),
+      home: Scaffold(
           backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-          title: SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Container(
-                    width: 50,
-                    height: 220,
-                    color: Colors.white,
-                    child: Image.asset(
-                      'images/logo.png',
+          appBar: AppBar(
+            backgroundColor: const Color.fromARGB(255, 24, 56, 97),
+            title: SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Container(
+                      width: 50,
+                      height: 220,
+                      color: Colors.white,
+                      child: Image.asset(
+                        'images/logo.png',
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 150,
-                  // color: Colors.yellow,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Instic-2024',
-                        textAlign: TextAlign.right,
-                        style: GoogleFonts.ubuntu(
-                          color: Colors.white60,
-                          fontSize: 14,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (() {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const RegistarPessoal()));
-                        }),
-                        child: Text(
-                          'Registar',
+                  SizedBox(
+                    width: 150,
+                    // color: Colors.yellow,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Instic-2024',
+                          textAlign: TextAlign.right,
                           style: GoogleFonts.ubuntu(
-                            color: Colors.white,
+                            color: Colors.white60,
                             fontSize: 14,
-                            textStyle: const TextStyle(
-                                // decoration: TextDecoration.underline,
-                                ),
                           ),
                         ),
-                      ),
-                    ],
+                        GestureDetector(
+                          onTap: (() {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegistarPessoal()));
+                          }),
+                          child: Text(
+                            'Registar',
+                            style: GoogleFonts.ubuntu(
+                              color: Colors.white,
+                              fontSize: 14,
+                              textStyle: const TextStyle(
+                                  // decoration: TextDecoration.underline,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(children: [
-              SizedBox(
-                width: double.infinity,
-                height: 240,
-                child: Image.asset(
-                  'images/isutic.jpg',
+          body: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(children: [
+                SizedBox(
                   width: double.infinity,
-                  height: double.infinity,
+                  height: 240,
+                  child: Image.asset(
+                    'images/isutic.jpg',
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 390,
-                color: const Color.fromARGB(255, 24, 56, 97),
-                child: Center(
-                  child: SingleChildScrollView(
+                Container(
+                  width: double.infinity,
+                  height: 400,
+                  // color: const Color.fromARGB(255, 24, 56, 97),
+                  decoration: const BoxDecoration(
+                    gradient: RadialGradient(
+                      colors: [
+                        Color.fromARGB(255, 12, 75, 156),
+                        Color.fromARGB(255, 24, 56, 97)
+                      ],
+                    ),
+                  ),
+
+                  child: Center(
+                      child: SingleChildScrollView(
                     child: Form(
                       key: _keyForm,
                       child: Column(children: [
-                        Text(
-                          'USER LOGIN',
-                          style: GoogleFonts.prompt(
+                        ListTile(
+                          leading: const Icon(
+                            Icons.settings_accessibility,
                             color: Colors.white,
+                            size: 35,
+                          ),
+                          title: Text(
+                            'ACESSO RESTRITO.',
+                            style: GoogleFonts.playfairDisplay(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            'Por favor, faça o login.',
+                            style: GoogleFonts.playfairDisplay(
+                                color: Colors.white),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
                         SizedBox(
-                          width: 390,
+                          width: 370,
                           // height: 60,
                           child: TextFormField(
                             obscureText: false,
@@ -133,43 +155,38 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                             keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.person,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                              hintText: 'email',
+                            decoration: const InputDecoration(
+                              labelText: 'EMAIL',
+                              labelStyle:
+                                  TextStyle(color: Colors.white, fontSize: 12),
                               alignLabelWithHint: true, // Centraliza o hintText
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              hintStyle: GoogleFonts.quicksand(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                                borderRadius: _bordasRedonda(),
+
+                              // hintStyle: GoogleFonts.quicksand(
+                              //     color: Colors.white,
+                              //     fontStyle: FontStyle.italic),
+
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
                               ),
-                              errorBorder: _erroBorda(),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.red),
-                                borderRadius: _bordasRedonda(),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Colors.yellow,
-                                ),
-                                borderRadius: _bordasRedonda(),
+
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
                               ),
                             ),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic),
                           ),
                         ),
                         const SizedBox(
                           height: 30,
                         ),
                         SizedBox(
-                          width: 390,
+                          width: 370,
                           child: TextFormField(
                             obscureText: true,
                             controller: _senhaController,
@@ -183,145 +200,102 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.lock,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                              hintText: 'senha',
+                              labelText: 'PALAVRA-CHAVE',
+                              labelStyle: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
                               alignLabelWithHint: true, // Centraliza o hintText
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               hintStyle: GoogleFonts.quicksand(
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.white),
-                                borderRadius: _bordasRedonda(),
+
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
                               ),
-                              errorBorder: _erroBorda(),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.red),
-                                borderRadius: _bordasRedonda(),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Colors.yellow,
-                                ),
-                                borderRadius: _bordasRedonda(),
+
+                              errorBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedErrorBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 240, 132, 9)),
                               ),
                             ),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic),
                           ),
                         ),
+
                         const SizedBox(
                           height: 30,
                         ),
                         SizedBox(
-                            width: 390,
-                            height: 40,
-                            // color: const Color.fromARGB(255, 134, 111, 111),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  Checkbox(
-                                    value: t,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        t = value!;
-                                      });
-                                    },
-                                    checkColor: Colors.white,
-                                  ),
-                                  const Text(
-                                    'Guardar senha',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                  ),
-                                ]),
-                                GestureDetector(
-                                    onTap: () {
-                                      // ignore: avoid_print
-                                      print('Clicou em Esqueceu senha');
-                                    },
-                                    child: const Text(
-                                      'Esqueceu a senha?',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
-                                    )),
-                              ],
-                            )),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        SizedBox(
-                          width: 390,
+                          width: 370,
                           child: ElevatedButton(
                             onPressed: () {
                               // _authServico.cadastrarUsuario(
                               //     email: _emailController.text,
                               //     senha: _senhaController.text);
 
-                              // if (_keyForm.currentState!.validate()) {
-                              // ignore: avoid_print
-                              // print('cadastrado com sucesso!');
-                              // } else {
-                              // ignore: avoid_print
-                              // print('Erro...');
-                              // }
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const TelaPrincipal(),
-                                ),
-                              );
+                              if (_keyForm.currentState!.validate()) {
+                                // ignore: avoid_print
+                                // print('Logado com sucesso!');
+                                _authServico.logarUsuario(
+                                    email: _emailController.text,
+                                    senha: _senhaController.text);
+
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const TelaPrincipal(),
+                                  ),
+                                );
+
+                                // ignore: avoid_print
+                                // print('Logado com sucesso!');
+                                // _authServico.sair();
+                                // // ignore: avoid_print
+                                // print('Saiu com sucesso...');
+                              } else {
+                                // ignore: avoid_print
+                                print('Erro ao logar...');
+                              }
                             },
                             style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                                 backgroundColor: Colors.white),
                             child: const Text(
-                              'Entrar',
-                              style: TextStyle(color: Colors.black),
+                              'ENTRAR',
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 12),
                             ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            // ignore: avoid_print
+                            print('Clicou em mim!');
+                          },
+                          child: const Text(
+                            'RECUPERAR CREDENCIAIS',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ]),
                     ),
-                  ),
+                  )),
                 ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 80,
-                child: Center(
-                  child: Text(
-                    '@Todos os direitos reservados',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.ubuntu(
-                      color: Colors.white,
-                      fontSize: 11,
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          ),
-        ));
+              ]),
+            ),
+          )),
+    );
   }
-}
-
-InputBorder _erroBorda() {
-  return OutlineInputBorder(
-    borderSide: const BorderSide(
-      color: Colors.red,
-    ),
-    borderRadius: _bordasRedonda(),
-  );
-}
-
-BorderRadius _bordasRedonda() {
-  return const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-      bottomLeft: Radius.circular(20),
-      bottomRight: Radius.circular(20));
 }

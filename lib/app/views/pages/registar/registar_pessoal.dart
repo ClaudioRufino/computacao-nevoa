@@ -389,13 +389,14 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                       color: Colors.blue, fontSize: 12),
                                 ),
                               ),
+                              // Form(child: child)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
                                   controller: emailController,
                                   validator: (String? value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Campo de email não pode estar vazio.";
+                                      return "Email não pode estar vazio.";
                                     } else if (!value.contains('@') ||
                                         !value.contains('.')) {
                                       return 'Coloque no formato de email. ex.:claudio@gmail.com';
@@ -440,7 +441,7 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                   controller: senhaController,
                                   validator: (String? value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Senha não pode estar vazia.";
+                                      return "Senha não pode estar vazio.";
                                     } else if (value.length < 14) {
                                       return 'Só é permitido mais de 5 caracteres.';
                                     }
@@ -523,14 +524,19 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                               ListTile(
                                 trailing: ElevatedButton.icon(
                                   onPressed: () {
+                                    if (keyFormDadosAutenticar.currentState!
+                                        .validate()) {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegistarFormacao(),
+                                        ),
+                                      );
+                                    }
+
                                     EstadoGlobal.estadoGlobal
                                         .setMensagemErro(false);
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegistarFormacao(),
-                                      ),
-                                    );
+
                                     candidatoController
                                         .setNome(nomeController.text);
                                     candidatoController.setDataNascimento(
