@@ -11,20 +11,23 @@ class Candidato extends User {
   late String emitidoEm;
   late double anoConclusaoMedio;
   late List<String> curso;
+  // late String curso2;
 
-  Candidato._(
-      {required super.nome,
-      required super.email,
-      required super.senha,
-      required this.genero,
-      required this.escola,
-      required this.media,
-      required this.emitidoEm,
-      required this.nomePai,
-      required this.nomeMae,
-      required this.certificado,
-      required this.dataNascimento,
-      required this.curso});
+  Candidato._({
+    required super.nome,
+    required super.email,
+    required super.senha,
+    required this.genero,
+    required this.escola,
+    required this.media,
+    required this.emitidoEm,
+    required this.nomePai,
+    required this.nomeMae,
+    required this.certificado,
+    required this.dataNascimento,
+    required this.curso,
+    // required this.curso2,
+  });
 
   static final Candidato instancia = Candidato._(
     nome: 'nome',
@@ -38,6 +41,7 @@ class Candidato extends User {
     certificado: '',
     emitidoEm: 'emitido',
     curso: [],
+    // curso2: '',
     dataNascimento: 'dataNascimento',
   );
 
@@ -45,7 +49,7 @@ class Candidato extends User {
     return nome;
   }
 
-  String getEmail() {
+  getEmail() {
     return email;
   }
 
@@ -129,12 +133,23 @@ class Candidato extends User {
     curso.add(valor);
   }
 
+  // String getCurso2() {
+  //   return curso1;
+  // }
+
+  // void setCurso2(String valor) {
+  //   curso1 = valor;
+  // }
+
   void eliminarCursos() {
     curso = [];
   }
 
   int totalCurso() {
-    return getCurso().length;
+    if (curso.length == 2) {
+      return 2;
+    }
+    return 1;
   }
 
   void reiniciar() {
@@ -149,6 +164,7 @@ class Candidato extends User {
     certificado = '';
     emitidoEm = 'emitido';
     curso = [];
+    // curso2 = '';
     dataNascimento = 'dataNascimento';
   }
 }

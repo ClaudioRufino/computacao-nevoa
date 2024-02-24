@@ -1,3 +1,5 @@
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
@@ -46,8 +48,6 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
 
   var caminhoFile = 'Formato permitido - PDF';
   void selecionarArquivo() async {
-    // ignore: avoid_print
-    print('Clicou em mim');
     FilePickerResult? resultado = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -58,6 +58,7 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
         caminhoFile = resultado.files.single.path ?? '';
         candidatoController.setCertificado(caminhoFile);
         caminhoFile = caminhoFile.substring(60);
+        arquivo = caminhoFile;
       });
     } else {
       // ignore: avoid_print
@@ -68,10 +69,15 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
   String curso1 = '';
   String curso2 = '';
 
+  String arquivo = "";
+
+  bool erroEscola = false;
+  bool erroMedia = false;
+  bool erroCurso = false;
+  bool erroCertificado = false;
+
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-
     // var keyFormPesquisar = GlobalKey<FormState>();
     var keyFormDadosFormacao = GlobalKey<FormState>();
     var candidatoController = CandidatoController();
@@ -210,8 +216,16 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                   onChanged: (value) {
                                     setState(() {
                                       selectEscola = value!;
+                                      erroEscola = false;
                                     });
                                   },
+                                ),
+                              ),
+                              Visibility(
+                                visible: erroEscola,
+                                child: const Text(
+                                  'Por favor, selecione uma escola.',
+                                  style: TextStyle(color: Colors.red),
                                 ),
                               ),
                               Padding(
@@ -241,28 +255,48 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                   onChanged: (value) {
                                     setState(() {
                                       selectMedia = value!;
+                                      erroMedia = false;
                                     });
                                   },
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: selecionarArquivo,
-                                child: const Text('Carregar Certificado'),
+                              Visibility(
+                                visible: erroMedia,
+                                child: const Text(
+                                  'Por favor, selecione a média.',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                              ListTile(
+                                trailing: InkWell(
+                                  onTap: () {
+                                    // ignore: avoid_print
+                                    print('Clicou em carregar certificado.');
+                                    selecionarArquivo();
+                                    erroCertificado = false;
+                                  },
+                                  child: const Icon(
+                                    Icons.file_upload,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                leading: const Text(
+                                  'Carregar Certificado',
+                                  style: TextStyle(
+                                      color: Colors.blue, fontSize: 14),
+                                ),
+                              ),
+                              Visibility(
+                                visible: erroCertificado,
+                                child: const Text(
+                                  'Por favor, carrega o certificado.',
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
                                   readOnly: true,
-                                  controller: emailController,
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Campo de email não pode estar vazio.";
-                                    } else if (!value.contains('@') ||
-                                        !value.contains('.')) {
-                                      return 'Coloque no formato de email. ex.:claudio@gmail.com';
-                                    }
-                                    return null;
-                                  },
                                   decoration: InputDecoration(
                                     prefixIcon: const Icon(
                                       Icons.file_copy,
@@ -276,17 +310,6 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                         color: Colors.blue,
                                         fontStyle: FontStyle.italic),
                                     enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
-                                      borderRadius: _bordasRedonda(),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.blue,
                                       ),
@@ -332,15 +355,21 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                     // print('Curso selecionado: $value');
                                     if (value != 'Selecione o curso') {
                                       curso1 = value!;
+                                      erroCurso = false;
                                     }
                                     // ignore: avoid_print
-                                    // print(
-                                    //     "Curso selecionado: $candidatoController.getCurso()");
 
                                     setState(() {
                                       selectCurso = value!;
                                     });
                                   },
+                                ),
+                              ),
+                              Visibility(
+                                visible: erroCurso,
+                                child: const Text(
+                                  'Por favor, selecioneo curso pretendido.',
+                                  style: TextStyle(color: Colors.red),
                                 ),
                               ),
                               Padding(
@@ -434,28 +463,53 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                               ListTile(
                                 trailing: ElevatedButton.icon(
                                   onPressed: () {
-                                    candidatoController.setEscola(selectEscola);
-                                    candidatoController
-                                        .setMedia(int.parse(selectMedia));
+                                    if (selectEscola == "Selecione a escola") {
+                                      setState(() {
+                                        erroEscola = true;
+                                      });
+                                    } else if (selectMedia ==
+                                        "Selecione a média") {
+                                      setState(() {
+                                        erroMedia = true;
+                                      });
+                                    } else if (arquivo.isEmpty) {
+                                      setState(() {
+                                        erroCertificado = true;
+                                      });
+                                    } else if (selectCurso ==
+                                        "Selecione o curso") {
+                                      setState(() {
+                                        erroCurso = true;
+                                      });
+                                    } else {
+                                      candidatoController
+                                          .setEscola(selectEscola);
+                                      candidatoController
+                                          .setMedia(int.parse(selectMedia));
 
-                                    // ignore: avoid_print
-                                    if (curso1 != '' &&
-                                        curso1 != 'Selecione o curso') {
-                                      candidatoController.setCurso(curso1);
-                                    }
-                                    if (curso2 != '' &&
-                                        curso2 != 'Selecione Segundo Curso') {
-                                      candidatoController.setCurso(curso2);
-                                    }
+                                      // Esse parte já foi feito no método de seleção do arquivo.
+                                      // candidatoController
+                                      //     .setCertificado(arquivo);
 
-                                    // ignore: avoid_print
-                                    print(candidatoController.totalCurso());
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegistarPagamento(),
-                                      ),
-                                    );
+                                      // ignore: avoid_print
+                                      if (curso1 != '' &&
+                                          curso1 != 'Selecione o curso') {
+                                        candidatoController.setCurso(curso1);
+                                      }
+                                      if (curso2 != '' &&
+                                          curso2 != 'Selecione Segundo Curso') {
+                                        candidatoController.setCurso(curso2);
+                                      }
+
+                                      // ignore: avoid_print
+                                      // print(candidatoController.totalCurso());
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegistarPagamento(),
+                                        ),
+                                      );
+                                    }
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward,
@@ -484,23 +538,6 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
           );
         });
   }
-}
-
-InputBorder _erroBorda() {
-  return OutlineInputBorder(
-    borderSide: const BorderSide(
-      color: Colors.red,
-    ),
-    borderRadius: _bordasRedonda(),
-  );
-}
-
-BorderRadius _bordasRedonda() {
-  return const BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-      bottomLeft: Radius.circular(20),
-      bottomRight: Radius.circular(20));
 }
 
 Stream<int> tempo() async* {

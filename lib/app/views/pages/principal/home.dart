@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/perfil.dart';
@@ -13,6 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int indice = 0;
+  ValueNotifier<bool> teste = ValueNotifier(false);
 
   final telas = [const Home(), const Perfil(), const Sobre()];
 
@@ -151,10 +153,21 @@ class _HomeState extends State<Home> {
                         children: [
                           Center(
                             child: ElevatedButton.icon(
-                              icon: const Icon(Icons.file_copy),
-                              label: const Text('Tópicos'),
-                              onPressed: () {},
-                            ),
+                                icon: const Icon(Icons.file_copy),
+                                label: const Text('Tópicos'),
+                                onPressed: () {
+                                  // ignore: avoid_print
+                                  // print('Tópicos...');
+                                  FirebaseFirestore.instance
+                                      .collection('usuarios')
+                                      .get()
+                                      .then((QuerySnapshot snap) {
+                                    for (var doc in snap.docs) {
+                                      // ignore: avoid_print
+                                      print('Data: $doc.data');
+                                    }
+                                  });
+                                }),
                           ),
                         ],
                       ),

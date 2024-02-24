@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:sistema_inscricao/app/models/pessoal.dart';
+import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
 import 'package:sistema_inscricao/app/servicos/estado_global.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_formacao.dart';
 
 class RegistarPessoal extends StatefulWidget {
@@ -30,6 +32,8 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
 
     var dadosPessoaisApi = DadosPessoaisAPI();
 
+    final AutenticacaoServico authServico = AutenticacaoServico();
+
     var keyFormPesquisar = GlobalKey<FormState>();
     var keyFormDadosAutenticar = GlobalKey<FormState>();
 
@@ -53,10 +57,22 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                   ),
                 ),
               ),
-              actions: const [
-                Icon(
-                  Icons.login,
-                  color: Colors.white,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    authServico.sair();
+                    // ignore: avoid_print
+                    print('Saiu com sucesso!');
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.login,
+                    color: Colors.white,
+                  ),
                 )
               ],
               title: Text(
@@ -442,7 +458,7 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                   validator: (String? value) {
                                     if (value == null || value.isEmpty) {
                                       return "Senha não pode estar vazio.";
-                                    } else if (value.length < 14) {
+                                    } else if (value.length < 5) {
                                       return 'Só é permitido mais de 5 caracteres.';
                                     }
                                     return null;
@@ -485,7 +501,10 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                   validator: (String? value) {
                                     if (value == null || value.isEmpty) {
                                       return "Confirmar senha não pode estar vazio.";
-                                    } else if (value.length < 14) {
+                                    } else if (senhaController.text !=
+                                        senhaConfirmarController.text) {
+                                      return "As senhas não correspondem.";
+                                    } else if (value.length < 5) {
                                       return 'Só é permitido mais de 5 caracteres.';
                                     }
                                     return null;
@@ -524,8 +543,31 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                               ListTile(
                                 trailing: ElevatedButton.icon(
                                   onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegistarFormacao(),
+                                      ),
+                                    );
                                     if (keyFormDadosAutenticar.currentState!
                                         .validate()) {
+                                      EstadoGlobal.estadoGlobal
+                                          .setMensagemErro(false);
+
+                                      candidatoController
+                                          .setNome(nomeController.text);
+                                      candidatoController.setDataNascimento(
+                                          dataNascimentoController.text);
+                                      candidatoController
+                                          .setNomePai(paiController.text);
+                                      candidatoController
+                                          .setNomeMae(maeController.text);
+                                      candidatoController
+                                          .setEmitido(emitidoController.text);
+                                      candidatoController
+                                          .setEmail(emailController.text);
+                                      candidatoController
+                                          .setSenha(senhaController.text);
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
@@ -534,23 +576,6 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                       );
                                     }
 
-                                    EstadoGlobal.estadoGlobal
-                                        .setMensagemErro(false);
-
-                                    candidatoController
-                                        .setNome(nomeController.text);
-                                    candidatoController.setDataNascimento(
-                                        dataNascimentoController.text);
-                                    candidatoController
-                                        .setNomePai(paiController.text);
-                                    candidatoController
-                                        .setNomeMae(maeController.text);
-                                    candidatoController
-                                        .setEmitido(emitidoController.text);
-                                    candidatoController
-                                        .setEmail(emailController.text);
-                                    candidatoController
-                                        .setSenha(senhaController.text);
                                     // ignore: avoid_print
                                     // print(
                                     //   'Segundo nome é: ${candidatoController.getNome()}',

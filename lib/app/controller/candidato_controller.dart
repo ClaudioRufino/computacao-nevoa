@@ -27,16 +27,20 @@ class CandidatoController {
     Candidato.instancia.setNomePai(nomePai);
   }
 
-  getNomePai() {
-    Candidato.instancia.getNomePai();
+  String getNomePai() {
+    return Candidato.instancia.getNomePai();
   }
 
   setNomeMae(String nomeMae) {
     Candidato.instancia.setNomeMae(nomeMae);
   }
 
-  getEmitido() {
-    Candidato.instancia.getEmitido();
+  String getNomeMae() {
+    return Candidato.instancia.getNomeMae();
+  }
+
+  String getEmitido() {
+    return Candidato.instancia.getEmitido();
   }
 
   setEmitido(String emitido) {
@@ -47,16 +51,16 @@ class CandidatoController {
     Candidato.instancia.setEmail(email);
   }
 
-  getEmail() {
-    Candidato.instancia.getEmail();
+  String getEmail() {
+    return Candidato.instancia.getEmail();
   }
 
   setSenha(String senha) {
     Candidato.instancia.setSenha(senha);
   }
 
-  getSenha() {
-    Candidato.instancia.getSenha();
+  String getSenha() {
+    return Candidato.instancia.getSenha();
   }
 
   setEscola(String escola) {
@@ -87,6 +91,14 @@ class CandidatoController {
     return Candidato.instancia.getCurso();
   }
 
+  // setCurso2(String valor) {
+  //   Candidato.instancia.setCurso2(valor);
+  // }
+
+  // String getCurso2() {
+  //   return Candidato.instancia.getCurso2();
+  // }
+
   setCertificado(String valor) {
     Candidato.instancia.setCertificado(valor);
   }
@@ -95,9 +107,9 @@ class CandidatoController {
     return Candidato.instancia.getCertificado();
   }
 
-  void eliminarCurso() {
-    Candidato.instancia.eliminarCursos();
-  }
+  // void eliminarCurso() {
+  //   Candidato.instancia.eliminarCursos();
+  // }
 
   int totalCurso() {
     return Candidato.instancia.totalCurso();

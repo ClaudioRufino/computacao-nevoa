@@ -1,6 +1,8 @@
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
+import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,6 +20,8 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
   var caminhoFile = 'Formato permitido - PDF';
   int valorInscricao = 0;
   ValueNotifier<bool> sucesso = ValueNotifier<bool>(false);
+
+  final AutenticacaoServico _authServico = AutenticacaoServico();
 
   void selecionarArquivo() async {
     // ignore: avoid_print
@@ -54,7 +58,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
         onPopInvoked: (value) {
           // ignore: avoid_print
           print('Clicou em Voltar');
-          candidatoController.eliminarCurso();
+          // candidatoController.eliminarCurso();
         },
         child: Scaffold(
           backgroundColor: const Color.fromARGB(255, 24, 56, 97),
@@ -71,10 +75,22 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                 ),
               ),
             ),
-            actions: const [
-              Icon(
-                Icons.login,
-                color: Colors.white,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  _authServico.sair();
+                  // ignore: avoid_print
+                  print('Saiu com sucesso!');
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.login,
+                  color: Colors.white,
+                ),
               )
             ],
             title: Text(
@@ -208,24 +224,8 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                             ListTile(
                               trailing: ElevatedButton.icon(
                                 onPressed: () {
-                                  String escola =
-                                      candidatoController.getEscola();
-                                  // ignore: avoid_print
-                                  print(escola);
-
-                                  int media = candidatoController.getMedia();
-                                  // ignore: avoid_print
-                                  print('Media: $media');
-                                  // ignore: avoid_print
-
-                                  String certificado =
-                                      candidatoController.getCertificado();
-                                  //ignore: avoid_print
-                                  print('Certificado: $certificado');
-                                  // ignore: avoid_print
-                                  print(['1', '2']);
-                                  // ignore: avoid_print
-
+                                  _authServico.cadastrarUsuario(
+                                      cand: candidatoController);
                                   sucesso.value = !sucesso.value;
                                 },
                                 icon: const Icon(
@@ -271,18 +271,19 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                             case ConnectionState.done:
                               // ignore: avoid_print
                               print('Terminado');
+
                               return Center(
                                   child: GestureDetector(
                                 onTap: () {
                                   // ignore: avoid_print
                                   print('Faça qualquer coisa');
                                 },
-                                child: ElevatedButton(
+                                child: TextButton(
                                   child: const Text(
                                     'Páginal de login',
                                     style: TextStyle(
-                                        // color: Colors.white,
-                                        ),
+                                      color: Colors.white,
+                                    ),
                                   ),
                                   onPressed: () {
                                     candidatoController.reiniciar();
@@ -314,7 +315,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
 
 Stream<int> tempo() async* {
   int i;
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i < 5; i++) {
     await Future.delayed(const Duration(seconds: 1));
     yield i;
   }
