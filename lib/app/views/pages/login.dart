@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sistema_inscricao/app/views/components/mensagem_login.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
-// import 'package:sistema_inscricao/app/views/components/input.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final AutenticacaoServico _authServico = AutenticacaoServico();
 
   final _keyForm = GlobalKey<FormState>();
+  bool login = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(
                     width: 150,
-                    // color: Colors.yellow,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -161,10 +161,6 @@ class _LoginPageState extends State<LoginPage> {
                                   TextStyle(color: Colors.white, fontSize: 12),
                               alignLabelWithHint: true, // Centraliza o hintText
 
-                              // hintStyle: GoogleFonts.quicksand(
-                              //     color: Colors.white,
-                              //     fontStyle: FontStyle.italic),
-
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white60),
                               ),
@@ -178,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 13,
+                                fontSize: 15,
                                 fontStyle: FontStyle.italic),
                           ),
                         ),
@@ -227,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 13,
+                                fontSize: 15,
                                 fontStyle: FontStyle.italic),
                           ),
                         ),
@@ -235,35 +231,54 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 30,
                         ),
+                        Visibility(
+                          visible: login,
+                          child: StreamBuilder<int>(
+                            stream: tempo(),
+                            builder: (context, AsyncSnapshot<int> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return Container();
+                                case ConnectionState.waiting:
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                case ConnectionState.active:
+                                  // ignore: avoid_print
+                                  return const MensagemLogin(
+                                    cor: Colors.white,
+                                    texto: 'Falha ao tentar logar!',
+                                  );
+                                case ConnectionState.done:
+                                  return const Center();
+                              }
+                              // return Container();
+                            },
+                          ),
+                        ),
                         SizedBox(
                           width: 370,
                           child: ElevatedButton(
                             onPressed: () {
-                              // _authServico.cadastrarUsuario(
-                              //     email: _emailController.text,
-                              //     senha: _senhaController.text);
-
                               if (_keyForm.currentState!.validate()) {
                                 // ignore: avoid_print
-                                // print('Logado com sucesso!');
-                                _authServico.logarUsuario(
+                                var logado = _authServico.logarUsuario(
                                     email: _emailController.text,
                                     senha: _senhaController.text);
-
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const TelaPrincipal(),
-                                  ),
-                                );
-
                                 // ignore: avoid_print
-                                // print('Logado com sucesso!');
-                                // _authServico.sair();
-                                // // ignore: avoid_print
-                                // print('Saiu com sucesso...');
-                              } else {
-                                // ignore: avoid_print
-                                print('Erro ao logar...');
+                                print('logado: $logado');
+                                if (logado != null) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TelaPrincipal(),
+                                    ),
+                                  );
+                                } else {
+                                  setState(() {
+                                    login = !login;
+                                  });
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -297,5 +312,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
           )),
     );
+  }
+}
+
+Stream<int> tempo() async* {
+  int i;
+  for (i = 0; i < 2; i++) {
+    await Future.delayed(const Duration(seconds: 1));
+    yield i;
   }
 }

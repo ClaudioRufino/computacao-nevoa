@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:sistema_inscricao/app/views/pages/home.dart';
 import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+// import 'package:sistema_inscricao/app/views/teste.dart';
 import 'firebase_options.dart';
 // import 'package:http/http.dart' as http;
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Login',
       theme: ThemeData.light(),
       home: const LoginPage(),
+      // home: const Teste(),
       // home: const Home(),
     );
   }
