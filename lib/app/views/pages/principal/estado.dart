@@ -18,7 +18,7 @@ class _SobreState extends State<Sobre> {
       child: Column(children: [
         Container(
           width: double.infinity,
-          height: 70,
+          height: 80,
           alignment: Alignment.bottomLeft,
           color: const Color.fromARGB(255, 24, 56, 97),
           child: Padding(
@@ -52,14 +52,14 @@ class _SobreState extends State<Sobre> {
           width: 360,
           height: 120,
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(255, 221, 97, 88),
-                  Color.fromARGB(255, 238, 112, 28)
-                ]),
-            color: Colors.white,
+            // gradient: LinearGradient(
+            //     begin: Alignment.bottomLeft,
+            //     end: Alignment.bottomRight,
+            //     colors: [
+            //       Color.fromARGB(255, 221, 97, 88),
+            //       Color.fromARGB(255, 238, 112, 28)
+            //     ]),
+            color: Colors.black12,
             borderRadius: BorderRadius.all(
               Radius.circular(14),
             ),
@@ -67,15 +67,16 @@ class _SobreState extends State<Sobre> {
           child: ListView(
             children: const [
               ListTile(
-                trailing: Icon(Icons.account_box, color: Colors.white38),
                 title: Center(
                   child: Text(
-                    'Estado de Pagamento',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    'ESTADO DE PEGAMENTO',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 subtitle: Center(
-                    child: Text('Pendente', style: TextStyle(fontSize: 16))),
+                    child: Text('PENDENTE',
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.redAccent))),
               ),
             ],
           ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:sistema_inscricao/app/controller/perfil_controller.dart';
 import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -15,6 +19,16 @@ class _PerfilState extends State<Perfil> {
   var perfilController = PerfilController();
   final AutenticacaoServico _authServico = AutenticacaoServico();
 
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore fs = FirebaseFirestore.instance;
+
+  CandidatoController candidato = CandidatoController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -24,9 +38,8 @@ class _PerfilState extends State<Perfil> {
         child: Column(children: [
           Container(
             width: double.infinity,
-            height: 70,
+            height: 80,
             alignment: Alignment.bottomLeft,
-            color: const Color.fromARGB(255, 24, 56, 97),
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -42,6 +55,8 @@ class _PerfilState extends State<Perfil> {
                   GestureDetector(
                     onTap: () {
                       _authServico.sair();
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
                     },
                     child: const Icon(
                       Icons.logout,
@@ -73,10 +88,7 @@ class _PerfilState extends State<Perfil> {
                 const Expanded(
                   flex: 4,
                   child: ListTile(
-                    title: Text(
-                      'Cláudio Rufino Milonga de Carvalho',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
+                    title: SelectOne(campo: 'nome'),
                     subtitle: Text(
                       'Dados Pessoais',
                       style: TextStyle(color: Colors.white24),
@@ -95,7 +107,7 @@ class _PerfilState extends State<Perfil> {
                       style: TextStyle(
                         height: 2,
                         color: Colors.white,
-                        backgroundColor: Colors.white24,
+                        backgroundColor: Colors.white10,
                       ),
                     ),
                   ),
@@ -111,67 +123,122 @@ class _PerfilState extends State<Perfil> {
           ),
           Container(
             width: 380,
-            height: 420,
+            height: 480,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(255, 221, 97, 88),
-                    Color.fromARGB(255, 238, 112, 28)
-                  ]),
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(14),
-              ),
+              color: Colors.black12,
+              borderRadius: BorderRadius.all(Radius.circular(14)),
             ),
             child: ListView(
               children: const [
+                // ignore: prefer_const_constructors
                 ListTile(
-                  trailing: Icon(Icons.bookmark, color: Colors.white38),
+                  trailing: Icon(Icons.bookmark, color: Colors.white70),
                   title: Text(
-                    'Média',
-                    style: TextStyle(color: Colors.white),
+                    'MÉDIA',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
-                  subtitle: Text('15-05-98'),
+                  subtitle: SelectOne(campo: 'media'),
                 ),
                 ListTile(
-                  trailing: Icon(Icons.date_range, color: Colors.white38),
+                  trailing: Icon(Icons.date_range, color: Colors.white70),
                   title: Text(
-                    'Nascimento',
-                    style: TextStyle(color: Colors.white),
+                    'NASCIMENTO',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
-                  subtitle: Text('15-05-98'),
+                  subtitle: SelectOne(campo: 'dataNascimento'),
                 ),
                 ListTile(
-                  trailing: Icon(Icons.man, color: Colors.white38),
+                  trailing: Icon(Icons.man, color: Colors.white70),
                   title: Text(
-                    'Nome do pai',
-                    style: TextStyle(color: Colors.white),
+                    'NOME DO PAI',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
-                  subtitle: Text('Rufino de Carvalho'),
+                  subtitle: SelectOne(campo: 'nomePai'),
                 ),
                 ListTile(
-                  trailing: Icon(Icons.woman, color: Colors.white38),
+                  trailing: Icon(Icons.woman, color: Colors.white70),
                   title: Text(
-                    'Nome da mãe',
-                    style: TextStyle(color: Colors.white),
+                    'NOME DA MÃE',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
-                  subtitle: Text('Mosalina Milonga'),
+                  subtitle: SelectOne(campo: 'nomeMae'),
                 ),
                 ListTile(
                   title: Text(
-                    'Curso Principal',
-                    style: TextStyle(color: Colors.white),
+                    'PRIMEIRA OPÇÃO',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
-                  subtitle: Text('Informática'),
-                  trailing: Icon(Icons.school, color: Colors.white38),
+                  subtitle: SelectOne(campo: 'curso1'),
+                  trailing: Icon(Icons.school, color: Colors.white70),
+                ),
+                ListTile(
+                  title: Text(
+                    'SEGUNDA OPÇÃO',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                  subtitle: SelectOne(campo: 'curso2'),
+                  trailing: Icon(Icons.school, color: Colors.white70),
                 )
               ],
             ),
           ),
         ]),
       ),
+    );
+  }
+}
+
+class SelectOne extends StatelessWidget {
+  final String campo;
+  const SelectOne({super.key, required this.campo});
+
+  @override
+  Widget build(BuildContext context) {
+    // Referência para o documento no Firestore
+    User? user = FirebaseAuth.instance.currentUser;
+
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('usuarios').doc(user!.uid);
+
+    return StreamBuilder(
+      stream: documentReference
+          .snapshots(), // O stream é notificado sempre que o documento é alterado
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Mostrar um indicador de carregamento enquanto os dados estão sendo buscados
+        }
+
+        if (snapshot.hasError) {
+          return Text('Erro: ${snapshot.error}');
+        }
+
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return const Text('Documento não encontrado');
+        }
+        double tam = 13;
+        Color cor = Colors.white54;
+
+        // Extrair dados do documento
+        Map<String, dynamic> data =
+            snapshot.data?.data() as Map<String, dynamic>;
+        late String nome;
+        if (campo == 'curso1') {
+          nome = data['curso'][0].toString();
+        } else if (campo == "curso2") {
+          nome = data['curso'][1].toString();
+        } else if (campo == "nome") {
+          tam = 16;
+          cor = Colors.white;
+          nome = data[campo].toString();
+        } else {
+          nome = data[campo].toString();
+        }
+
+        return Text(
+          nome,
+          style: TextStyle(color: cor, fontSize: tam),
+        );
+      },
     );
   }
 }

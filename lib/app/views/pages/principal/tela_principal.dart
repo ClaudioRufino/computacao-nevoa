@@ -15,49 +15,52 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   final telas = [const Home(), const Sobre(), const Perfil()];
 
+  // @override
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-        body: IndexedStack(
-          index: indice,
-          children: telas,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: indice,
-          elevation: 10,
-          onTap: (value) => {
-            setState(
-              () {
-                indice = value;
-              },
-            )
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Color.fromARGB(255, 24, 56, 97),
-              ),
-              label: 'Inicio',
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 24, 56, 97),
+      body: IndexedStack(
+        index: indice,
+        children: telas,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        currentIndex: indice,
+        elevation: 10,
+        backgroundColor: const Color.fromARGB(255, 20, 47, 82),
+        onTap: (value) => {
+          setState(
+            () {
+              indice = value;
+            },
+          )
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.info,
-                color: Color.fromARGB(255, 24, 56, 97),
-              ),
-              label: 'Estado',
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.info,
+              color: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: Color.fromARGB(255, 24, 56, 97),
-              ),
-              label: 'Perfil',
-            )
-          ],
-        ),
+            label: 'Estado',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            label: 'Perfil',
+          )
+        ],
       ),
     );
   }

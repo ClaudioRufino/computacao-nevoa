@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 
 class AutenticacaoServico {
+  // Crie uma instancia para o Firebase.auth
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   // Crie uma referência para o Firestore
-  final db = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
 
   Future<void> cadastrarUsuario({required CandidatoController cand}) async {
     try {
@@ -15,7 +17,7 @@ class AutenticacaoServico {
 
       final idUser = userCredential.user!.uid;
 
-      await FirebaseFirestore.instance.collection('usuarios').doc(idUser).set({
+      await firestore.collection('usuarios').doc(idUser).set({
         'nome': 'audilia', //cand.getNome(),
         'escola': cand.getEscola(),
         'media': cand.getMedia(),
@@ -29,21 +31,23 @@ class AutenticacaoServico {
 
       // ignore: avoid_print
       print('Usuário adicionado com sucesso!');
-
-      // ignore: avoid_print
-      // print('usuário pegado $user');
     } catch (e) {
       // ignore: avoid_print
       print('Erro ao cadastrar o usuário');
     }
   }
 
-  logarUsuario({required String email, required String senha}) {
+  Future<bool> logarUsuario(
+      {required String email, required String senha}) async {
     try {
-      _firebaseAuth.signInWithEmailAndPassword(email: email, password: senha);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: senha);
+
+      return true;
     } catch (e) {
       // ignore: avoid_print
-      print('Erro ao fazer o login: ');
+      print('Erro ao fazer o login: $e');
+      return false;
     }
   }
 

@@ -287,6 +287,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                                   ),
                                   onPressed: () {
                                     candidatoController.reiniciar();
+                                    -_authServico.sair();
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => const LoginPage(),
