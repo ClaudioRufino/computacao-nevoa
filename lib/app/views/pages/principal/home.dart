@@ -5,6 +5,8 @@ import 'package:sistema_inscricao/app/views/pages/principal/perfil.dart';
 import 'package:sistema_inscricao/app/views/pages/principal/estado.dart';
 import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 
+// import 'package:firebase_auth/firebase_auth.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -18,10 +20,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int indice = 0;
   ValueNotifier<bool> teste = ValueNotifier(false);
 
+  final AutenticacaoServico _authServico = AutenticacaoServico();
+
   final telas = [const Home(), const Perfil(), const Sobre()];
 
   int totalInscritos = 0;
-  final AutenticacaoServico _authServico = AutenticacaoServico();
 
   @override
   void initState() {
@@ -101,9 +104,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     topLeft: Radius.circular(14),
                     topRight: Radius.circular(14),
                   )),
-              child: Column(
+              child: const Column(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 18),
                     child: Text(
                       'TOTAL INSCRITOS',
@@ -113,7 +116,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(6),
                     child: Divider(
                       color: Colors.black26,
@@ -122,13 +125,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   CircleAvatar(
                     maxRadius: 45,
                     backgroundColor: Colors.black12,
-                    child: Text(
-                      '${_animation.value}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
+                    child: SelectOne(),
+                    // child: Text(
+                    //   ,
+                    //   style: const TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 18,
+                    //   ),
+                    // ),
                   ),
                 ],
               ),
@@ -357,4 +361,44 @@ Widget curso(String curso, int total, IconData icon) {
       ),
     ),
   );
+}
+
+class SelectOne extends StatelessWidget {
+  // final String campo;
+  const SelectOne({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Pega inicialmente todos os usuários
+    CollectionReference queryUsuarios =
+        FirebaseFirestore.instance.collection('usuarios');
+
+    return StreamBuilder(
+      stream: queryUsuarios
+          .snapshots(), // O stream é notificado sempre que o documento é alterado
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Mostrar um indicador de carregamento enquanto os dados estão sendo buscados
+        }
+
+        if (snapshot.hasError) {
+          return Text('Erro: ${snapshot.error}');
+        }
+
+        if (!snapshot.hasData) {
+          return const Text('Documentos não encontrado');
+        }
+        double tam = 13;
+        Color cor = Colors.white54;
+
+        // Extrair dados do documento
+        final String total = (snapshot.data!.size).toString();
+
+        return Text(
+          total,
+          style: TextStyle(color: cor, fontSize: tam),
+        );
+      },
+    );
+  }
 }

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
 import 'package:sistema_inscricao/app/controller/registar/formacao_controller.dart';
+import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 // import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
 import 'package:sistema_inscricao/app/servicos/estado_global.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:sistema_inscricao/app/views/pages/registar/registar_pagamento.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -24,6 +26,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
   String selectMedia = 'Selecione a média';
   String selectCurso = 'Selecione o curso';
   String selectSegundaOpcao = 'Selecione Segundo Curso';
+
+  final AutenticacaoServico _authServico = AutenticacaoServico();
 
   List<String> listaMedias = [
     'Selecione a média',
@@ -46,7 +50,7 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
   var formacaoController = FormacaoController();
   var candidatoController = CandidatoController();
 
-  var caminhoFile = 'Formato permitido - PDF';
+  var caminhoFile = 'FORMATO PERMITIDO - PDF';
   void selecionarArquivo() async {
     FilePickerResult? resultado = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -100,10 +104,20 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                   ),
                 ),
               ),
-              actions: const [
-                Icon(
-                  Icons.login,
-                  color: Colors.white,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    _authServico.sair();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.login,
+                    color: Colors.white,
+                  ),
                 )
               ],
               title: Text(
@@ -170,14 +184,7 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                       Container(
                         height: 30,
                       ),
-                      const SizedBox(height: 5),
-                      Container(
-                        height: 10,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40))),
-                      ),
+                      const SizedBox(height: 15),
                       Container(
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -192,12 +199,14 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: DropdownButton(
                                   value: selectEscola,
-                                  borderRadius: BorderRadius.circular(40),
-                                  iconEnabledColor: Colors.blue,
+                                  // borderRadius: BorderRadius.circular(40),
+                                  iconEnabledColor:
+                                      const Color.fromARGB(255, 24, 56, 97),
                                   isExpanded: true,
                                   underline: Container(
                                     height: 1,
-                                    color: Colors.blue,
+                                    color:
+                                        const Color.fromARGB(255, 24, 56, 97),
                                   ),
                                   items: formacaoController
                                       .listaescola()
@@ -207,7 +216,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                           child: Text(
                                             escola,
                                             style: GoogleFonts.quicksand(
-                                                color: Colors.blue,
+                                                color: const Color.fromARGB(
+                                                    255, 24, 56, 97),
                                                 fontStyle: FontStyle.italic),
                                           ),
                                         ),
@@ -232,12 +242,14 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: DropdownButton<String>(
                                   value: selectMedia,
-                                  borderRadius: BorderRadius.circular(40),
-                                  iconEnabledColor: Colors.blue,
+                                  // borderRadius: BorderRadius.circular(40),
+                                  iconEnabledColor:
+                                      const Color.fromARGB(255, 24, 56, 97),
                                   isExpanded: true,
                                   underline: Container(
                                     height: 1,
-                                    color: Colors.blue,
+                                    color:
+                                        const Color.fromARGB(255, 24, 56, 97),
                                   ),
                                   items: listaMedias
                                       .map(
@@ -246,7 +258,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                           child: Text(
                                             media,
                                             style: GoogleFonts.quicksand(
-                                                color: Colors.blue,
+                                                color: const Color.fromARGB(
+                                                    255, 24, 56, 97),
                                                 fontStyle: FontStyle.italic),
                                           ),
                                         ),
@@ -267,23 +280,37 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                   style: TextStyle(color: Colors.red),
                                 ),
                               ),
-                              ListTile(
-                                trailing: InkWell(
-                                  onTap: () {
-                                    // ignore: avoid_print
-                                    print('Clicou em carregar certificado.');
-                                    selecionarArquivo();
-                                    erroCertificado = false;
-                                  },
-                                  child: const Icon(
-                                    Icons.file_upload,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                leading: const Text(
-                                  'Carregar Certificado',
-                                  style: TextStyle(
-                                      color: Colors.blue, fontSize: 14),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      'Carregar Certificado',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 24, 56, 97),
+                                        fontSize: 15,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.file_upload,
+                                          size: 30,
+                                          color:
+                                              Color.fromARGB(255, 24, 56, 97),
+                                        ),
+                                        onTap: () {
+                                          // ignore: avoid_print
+                                          print(
+                                              'Clicou em carregar certificado.');
+                                          selecionarArquivo();
+                                          erroCertificado = false;
+                                        },
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                               Visibility(
@@ -301,40 +328,60 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                     prefixIcon: const Icon(
                                       Icons.file_copy,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.redAccent,
                                     ),
                                     hintText: caminhoFile,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
                                     hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
+                                      color: Colors.redAccent,
+                                      // fontStyle: FontStyle.italic,
+                                      fontSize: 14,
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2.0,
+                                    ),
                                     enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.blue,
+                                        color: Color.fromARGB(255, 24, 56, 97),
+                                      ),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 24, 56, 97),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              const DividerTheme(
-                                data: DividerThemeData(),
-                                child: Text(
-                                  'Informações do curso',
+                              const SizedBox(height: 10),
+                              const Divider(),
+                              const ListTile(
+                                title: Text(
+                                  'INFORMAÇÕES DO CURSO',
                                   style: TextStyle(
-                                      color: Colors.blue, fontSize: 12),
+                                    color: Color.fromARGB(255, 24, 56, 97),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Escolha um curso Principal e uma segunda opção, se desejar.',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                  ),
                                 ),
                               ),
+                              const Divider(),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: DropdownButton(
                                   value: selectCurso,
                                   borderRadius: BorderRadius.circular(40),
-                                  iconEnabledColor: Colors.blue,
+                                  iconEnabledColor:
+                                      const Color.fromARGB(255, 24, 56, 97),
                                   isExpanded: true,
                                   underline: Container(
                                     height: 1,
-                                    color: Colors.blue,
+                                    color:
+                                        const Color.fromARGB(255, 24, 56, 97),
                                   ),
                                   items: formacaoController
                                       .listaCurso(selectSegundaOpcao)
@@ -344,7 +391,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                           child: Text(
                                             curso,
                                             style: GoogleFonts.quicksand(
-                                                color: Colors.blue,
+                                                color: const Color.fromARGB(
+                                                    255, 24, 56, 97),
                                                 fontStyle: FontStyle.italic),
                                           ),
                                         ),
@@ -377,11 +425,13 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                 child: DropdownButton(
                                   value: selectOpcaoCurso,
                                   borderRadius: BorderRadius.circular(40),
-                                  iconEnabledColor: Colors.blue,
+                                  iconEnabledColor:
+                                      const Color.fromARGB(255, 24, 56, 97),
                                   isExpanded: true,
                                   underline: Container(
                                     height: 1,
-                                    color: Colors.blue,
+                                    color:
+                                        const Color.fromARGB(255, 24, 56, 97),
                                   ),
                                   items: listaOpcaoCursos
                                       .map(
@@ -390,7 +440,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                           child: Text(
                                             curso,
                                             style: GoogleFonts.quicksand(
-                                                color: Colors.blue,
+                                                color: const Color.fromARGB(
+                                                    255, 24, 56, 97),
                                                 fontStyle: FontStyle.italic),
                                           ),
                                         ),
@@ -427,11 +478,13 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                   child: DropdownButton(
                                     value: selectSegundaOpcao,
                                     borderRadius: BorderRadius.circular(40),
-                                    iconEnabledColor: Colors.blue,
+                                    iconEnabledColor:
+                                        const Color.fromARGB(255, 24, 56, 97),
                                     isExpanded: true,
                                     underline: Container(
                                       height: 1,
-                                      color: Colors.blue,
+                                      color:
+                                          const Color.fromARGB(255, 24, 56, 97),
                                     ),
                                     items: formacaoController
                                         .listaOpcoes(selectCurso)
@@ -441,7 +494,8 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                             child: Text(
                                               curso,
                                               style: GoogleFonts.quicksand(
-                                                  color: Colors.blue,
+                                                  color: const Color.fromARGB(
+                                                      255, 24, 56, 97),
                                                   fontStyle: FontStyle.italic),
                                             ),
                                           ),
@@ -516,12 +570,13 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                     color: Colors.white,
                                   ),
                                   label: const Text(
-                                    'Proximo',
-                                    style: TextStyle(color: Colors.white),
+                                    'PRÓXIMO',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 12),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        const Color.fromRGBO(138, 67, 9, 1),
+                                        const Color.fromARGB(255, 24, 56, 97),
                                   ),
                                 ),
                               ),
@@ -547,3 +602,11 @@ Stream<int> tempo() async* {
     yield i;
   }
 }
+
+// BorderRadius _bordasRedonda() {
+//   return const BorderRadius.only(
+//       topLeft: Radius.circular(20),
+//       topRight: Radius.circular(20),
+//       bottomLeft: Radius.circular(20),
+//       bottomRight: Radius.circular(20));
+// }

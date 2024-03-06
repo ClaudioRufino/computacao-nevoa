@@ -16,11 +16,11 @@ class _MensagemState extends State<Mensagem> {
       padding: const EdgeInsets.only(top: 10),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(6),
           color: widget.cor,
           // color: const Color.fromARGB(255, 173, 17, 17),
         ),
-        width: double.infinity,
+        width: 350,
         height: 50,
         child: Center(
           child: Text(

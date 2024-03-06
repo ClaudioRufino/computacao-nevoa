@@ -14,7 +14,7 @@ class _MenuState extends State<Menu> {
     return Container(
       width: double.infinity,
       height: 40,
-      color: const Color.fromRGBO(138, 67, 9, 1),
+      color: Colors.white,
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: widget.menuItem),
@@ -44,15 +44,18 @@ class _MenuItemState extends State<MenuItem> {
       return Container(
         height: 30,
         decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.yellow, width: 1))),
+            border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
         child: Row(
           children: [
             Icon(
               widget.icon,
-              color: Colors.white,
+              color: Colors.black,
             ),
             Text(widget.texto,
-                style: const TextStyle(fontSize: 14, color: Colors.white)),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                )),
           ],
         ),
       );
@@ -61,11 +64,11 @@ class _MenuItemState extends State<MenuItem> {
       children: [
         Icon(
           widget.icon,
-          color: Colors.white,
+          color: Colors.black,
         ),
         Text(
           widget.texto,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
+          style: const TextStyle(fontSize: 14, color: Colors.black),
         ),
       ],
     );

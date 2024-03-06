@@ -141,7 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                       // ),
                       SizedBox(
                         width: 370,
-                        // height: 60,
                         child: TextFormField(
                           obscureText: false,
                           controller: _emailController,
@@ -174,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 18,
                               fontStyle: FontStyle.italic),
                         ),
                       ),
@@ -235,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 18,
                               fontStyle: FontStyle.italic),
                         ),
                       ),

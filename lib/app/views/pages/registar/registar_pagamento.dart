@@ -19,6 +19,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
   var candidatoController = CandidatoController();
   var caminhoFile = 'Formato permitido - PDF';
   int valorInscricao = 0;
+  bool erroTalaoPagamanrto = false;
   ValueNotifier<bool> sucesso = ValueNotifier<bool>(false);
 
   final AutenticacaoServico _authServico = AutenticacaoServico();
@@ -44,7 +45,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
 
   @override
   build(BuildContext context) {
-    var emailController = TextEditingController();
+    // var emailController = TextEditingController();
 
     // valorInscricao = candidatoController.totalCurso();
     int valorInscricao = candidatoController.totalCurso() == 2 ? 8000 : 4000;
@@ -140,8 +141,8 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                     ),
                     Container(
                       decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
+                          // color: Colors.white,
+                          ),
                       width: double.infinity,
                       // color: Colors.white,
                       child: Form(
@@ -153,92 +154,144 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 width: 300,
-                                height: 50,
+                                height: 230,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(2),
-                                  color: const Color.fromARGB(255, 33, 73, 126),
+                                  color: Colors.black12,
                                 ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Total a pagar -> $valorInscricao kz",
-                                      style: const TextStyle(
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 75, 25, 22),
+                                        maxRadius: 50,
+                                        child: Icon(
+                                          size: 60,
+                                          Icons.monetization_on,
                                           color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: 'sans-serif'),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        title: const Center(
+                                          child: Text(
+                                            "TOTAL A PAGAR",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'sans-serif'),
+                                          ),
+                                        ),
+                                        subtitle: Center(
+                                            child: Text(
+                                          "$valorInscricao kz",
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        )),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             const SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: selecionarArquivo,
-                              child: const Text(
-                                  'Carregar comprovativo do pagamento'),
-                            ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                readOnly: true,
-                                controller: emailController,
-                                validator: (String? value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Campo de email não pode estar vazio.";
-                                  } else if (!value.contains('@') ||
-                                      !value.contains('.')) {
-                                    return 'Coloque no formato de email. ex.:claudio@gmail.com';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.file_copy,
-                                    size: 16,
-                                    color: Colors.blue,
-                                  ),
-                                  hintText: caminhoFile,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  hintStyle: GoogleFonts.quicksand(
-                                      color: Colors.blue,
-                                      fontStyle: FontStyle.italic),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Carregar Certificado',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
                                     ),
                                   ),
-                                  // errorBorder: _erroBorda(),
-                                  focusedErrorBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: GestureDetector(
+                                      child: const Icon(
+                                        Icons.file_upload,
+                                        size: 30,
+                                        color: Colors.white,
+                                      ),
+                                      onTap: () {
+                                        // ignore: avoid_print
+                                        print(
+                                            'Clicou em carregar certificado.');
+                                        selecionarArquivo();
+                                        // erroCertificado = false;
+                                      },
+                                    ),
                                   ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              width: 330,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      Icons.file_copy,
+                                      size: 16,
+                                      color: Colors.redAccent,
+                                    ),
+                                    hintText: caminhoFile,
+                                    hintStyle: GoogleFonts.quicksand(
+                                      color: Colors.redAccent,
+                                      // fontStyle: FontStyle.italic,
+                                      fontSize: 14,
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2.0,
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white30,
+                                      ),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white30,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                            Visibility(
+                              visible: erroTalaoPagamanrto,
+                              child: const Text(
+                                'Por favor, carrega o certificado.',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
                             ListTile(
-                              trailing: ElevatedButton.icon(
+                              title: ElevatedButton(
                                 onPressed: () {
                                   _authServico.cadastrarUsuario(
                                       cand: candidatoController);
                                   sucesso.value = !sucesso.value;
                                 },
-                                icon: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                ),
-                                label: const Text(
-                                  'Finalizar Inscrição',
-                                  style: TextStyle(color: Colors.white),
-                                ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromRGBO(138, 67, 9, 1),
+                                  backgroundColor: Colors.black12,
+                                ),
+                                child: const Text(
+                                  'FINALIZAR',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -246,7 +299,7 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Visibility(
                       visible: sucesso.value,
                       child: StreamBuilder<int>(
@@ -263,9 +316,8 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                                 child: CircularProgressIndicator(),
                               );
                             case ConnectionState.active:
-                              // ignore: avoid_print
                               return const Mensagem(
-                                cor: Color.fromRGBO(138, 67, 9, 1),
+                                cor: Color.fromRGBO(163, 40, 19, 1),
                                 texto: 'Inscrição realizada com sucesso!',
                               );
                             case ConnectionState.done:
@@ -280,14 +332,15 @@ class _RegistarPagamentoState extends State<RegistarPagamento> {
                                 },
                                 child: TextButton(
                                   child: const Text(
-                                    'Páginal de login',
+                                    textAlign: TextAlign.center,
+                                    'Páginal de login. Clique aqui para poder entrar na sua conta e verificar o seu estado de inscrição.',
                                     style: TextStyle(
+                                      decoration: TextDecoration.underline,
                                       color: Colors.white,
                                     ),
                                   ),
                                   onPressed: () {
                                     candidatoController.reiniciar();
-                                    -_authServico.sair();
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => const LoginPage(),

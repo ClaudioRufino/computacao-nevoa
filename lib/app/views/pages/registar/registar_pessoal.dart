@@ -158,23 +158,24 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                               prefixIcon: const Icon(
                                 Icons.search,
                                 size: 16,
-                                color: Colors.blue,
+                                color: Colors.white54,
                               ),
-                              hintText: 'Número de B.I',
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              hintStyle: GoogleFonts.quicksand(
-                                  color: Colors.blue,
+                              labelText: 'Número do B.I',
+                              // contentPadding:
+                              //     const EdgeInsets.symmetric(vertical: 10.0),
+                              labelStyle: GoogleFonts.quicksand(
+                                  color: Colors.white54,
                                   fontStyle: FontStyle.italic),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                  color: Colors.blue,
+                                  color: Colors.white70,
                                 ),
                                 borderRadius: _bordasRedonda(),
                               ),
                               errorBorder: _erroBorda(),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.red),
+                                borderSide:
+                                    const BorderSide(color: Colors.redAccent),
                                 borderRadius: _bordasRedonda(),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -184,68 +185,89 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                 borderRadius: _bordasRedonda(),
                               ),
                             ),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic),
                           ),
                         ),
                       ),
                       const SizedBox(height: 5),
-                      ElevatedButton(
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              });
+                      ListTile(
+                        trailing: ElevatedButton(
+                          onPressed: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                });
 
-                          if (keyFormPesquisar.currentState!.validate()) {
-                            String bi = pesquisarController.text;
-                            bool biEncontrado =
-                                await dadosPessoaisApi.existeBI(bi);
-                            if (biEncontrado == true) {
-                              Pessoal? dadosPessoal =
-                                  await dadosPessoaisApi.dadosPessoais(bi);
-                              if (dadosPessoal != null) {
-                                nomeController.text = dadosPessoal.nome;
-                                dataNascimentoController.text =
-                                    dadosPessoal.dataNascimento;
-                                paiController.text = dadosPessoal.nomePai;
-                                maeController.text = dadosPessoal.nomeMae;
-                                emitidoController.text = dadosPessoal.emitidoEm;
+                            if (keyFormPesquisar.currentState!.validate()) {
+                              String bi = pesquisarController.text;
+                              bool biEncontrado =
+                                  await dadosPessoaisApi.existeBI(bi);
+                              if (biEncontrado == true) {
+                                Pessoal? dadosPessoal =
+                                    await dadosPessoaisApi.dadosPessoais(bi);
+                                if (dadosPessoal != null) {
+                                  nomeController.text = dadosPessoal.nome;
+                                  dataNascimentoController.text =
+                                      dadosPessoal.dataNascimento;
+                                  paiController.text = dadosPessoal.nomePai;
+                                  maeController.text = dadosPessoal.nomeMae;
+                                  emitidoController.text =
+                                      dadosPessoal.emitidoEm;
+                                }
+                                // ignore: avoid_print
+                                // print('BI não encontrado!');
+
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                              } else {
+                                // ignore: avoid_print
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                                EstadoGlobal.estadoGlobal.setMensagemErro(true);
                               }
-                              // ignore: avoid_print
-                              // print('BI não encontrado!');
-
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).pop();
-                            } else {
-                              // ignore: avoid_print
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).pop();
-                              EstadoGlobal.estadoGlobal.setMensagemErro(true);
                             }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(138, 67, 9, 1),
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 11, 37, 71),
+                          ),
+                          child: const Text(
+                            'PESQUISAR',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
                         ),
-                        child: const Text(
-                          'Pesquisar',
+                      ),
+                      // Container(
+                      //   height: 10,
+                      //   decoration: const BoxDecoration(
+                      //       // color: Colors.white,
+                      //       borderRadius: BorderRadius.only(
+                      //           bottomLeft: Radius.circular(40),
+                      //           bottomRight: Radius.circular(40))),
+                      // ),
+                      // const SizedBox(height: 10),
+                      const ListTile(
+                        title: Text(
+                          'DADOS PESSOAIS.',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'Dados gerados automaticamente.',
                           style: TextStyle(color: Colors.white),
                         ),
+                        trailing: Icon(Icons.person, color: Colors.white70),
                       ),
                       Container(
-                        height: 10,
                         decoration: const BoxDecoration(
                             // color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40))),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          // borderRadius: BorderRadius.all(Radius.circular(30)),
-                        ),
+                            // borderRadius: BorderRadius.all(Radius.circular(30)),
+                            ),
                         width: double.infinity,
                         // color: Colors.white,
                         child: Form(
@@ -262,30 +284,24 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.person,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
                                     hintText: 'Nome',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
                                     hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                        color: Colors.white54,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 14),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white70,
                                       ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                        borderRadius: _bordasRedonda()),
                                   ),
                                 ),
                               ),
@@ -298,30 +314,24 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.calendar_today,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Nome do pai',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
+                                    hintText: 'Nome do Pai',
                                     hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                        color: Colors.white54,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 14),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white70,
                                       ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                        borderRadius: _bordasRedonda()),
                                   ),
                                 ),
                               ),
@@ -334,29 +344,26 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.calendar_today,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Nome da mãe',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
+                                    hintText: 'Nome da Mãe',
                                     hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                        color: Colors.white54,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 14),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white70,
                                       ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    // errorBorder: _erroBorda(),
+
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
                                   ),
                                 ),
@@ -370,42 +377,48 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.person_search,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Emitido em',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
+                                    hintText: 'Emitido Em',
                                     hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                        color: Colors.white54,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 14),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white70,
                                       ),
-                                    ),
-                                    errorBorder: _erroBorda(),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                        borderRadius: _bordasRedonda()),
                                   ),
                                 ),
                               ),
-                              const DividerTheme(
-                                data: DividerThemeData(),
-                                child: Text(
-                                  'Dados de Autenticação',
+                              // const DividerTheme(
+                              //   data: DividerThemeData(),
+                              //   child: Text(
+                              //     'Dados de Autenticação',
+                              //     style: TextStyle(
+                              //         color: Colors.blue, fontSize: 12),
+                              //   ),
+                              // ),
+                              // Form(child: child)
+                              const ListTile(
+                                title: Text(
+                                  'DADOS DE AUTENTICAÇÃO',
                                   style: TextStyle(
-                                      color: Colors.blue, fontSize: 12),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  'Crie um email e senha. Dados obrigatórios.',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              // Form(child: child)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
@@ -424,30 +437,37 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.person,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Email',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    labelText: 'Email',
+                                    labelStyle: GoogleFonts.quicksand(
+                                      color: Colors.white54,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 14,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white70,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
                                     errorBorder: _erroBorda(),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
+                                      borderSide: const BorderSide(
+                                          color: Colors.redAccent),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ),
@@ -467,18 +487,17 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.lock,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Senha',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
+                                    labelText: 'Senha',
+                                    labelStyle: GoogleFonts.quicksand(
+                                        color: Colors.white54,
                                         fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white54,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
                                     errorBorder: _erroBorda(),
                                     focusedErrorBorder: OutlineInputBorder(
@@ -486,11 +505,17 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                           const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ),
@@ -513,18 +538,17 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     prefixIcon: const Icon(
                                       Icons.lock,
                                       size: 16,
-                                      color: Colors.blue,
+                                      color: Colors.white54,
                                     ),
-                                    hintText: 'Confirmar senha',
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    hintStyle: GoogleFonts.quicksand(
-                                        color: Colors.blue,
+                                    labelText: 'Confirmar senha',
+                                    labelStyle: GoogleFonts.quicksand(
+                                        color: Colors.white54,
                                         fontStyle: FontStyle.italic),
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white54,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
                                     errorBorder: _erroBorda(),
                                     focusedErrorBorder: OutlineInputBorder(
@@ -532,11 +556,17 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                           const BorderSide(color: Colors.red),
                                       borderRadius: _bordasRedonda(),
                                     ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
                                       ),
+                                      borderRadius: _bordasRedonda(),
                                     ),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ),
@@ -586,12 +616,15 @@ class _RegistarPessoalState extends State<RegistarPessoal> {
                                     color: Colors.white,
                                   ),
                                   label: const Text(
-                                    'Proximo',
-                                    style: TextStyle(color: Colors.white),
+                                    'PRÓXIMO',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        const Color.fromRGBO(138, 67, 9, 1),
+                                        const Color.fromARGB(255, 11, 37, 71),
                                   ),
                                 ),
                               ),
