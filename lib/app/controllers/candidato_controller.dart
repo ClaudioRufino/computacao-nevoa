@@ -1,7 +1,29 @@
+// ignore_for_file: unused_local_variable, avoid_print
+
 import 'package:sistema_inscricao/app/models/candidato.dart';
+import 'package:sistema_inscricao/app/repositories/db_repository.dart';
 
 class CandidatoController {
   CandidatoController();
+
+  // Instância para trabalhar com o banco de dados
+  DbRepository banco = DbRepository();
+
+  String getFotoPerfil() {
+    banco.getFotoPerfil().then((path) => setFoto(path));
+    var url = getFoto();
+    return url;
+  }
+
+  String getCampo({required String campo}) {
+    banco.getFotoPerfil().then((value) => setFoto(value));
+    var url = getFoto();
+    return url;
+  }
+
+  setFotoPerfil(String foto) {
+    banco.updateCandidato(campo: 'imagem', valor: foto);
+  }
 
   adicionarCandidato() {}
 
@@ -83,21 +105,13 @@ class CandidatoController {
     return Candidato.instancia.getNome();
   }
 
-  setCurso(String valor) {
-    Candidato.instancia.setCurso(valor);
+  setCurso1(String valor) {
+    Candidato.instancia.setCurso1(valor);
   }
 
-  List<String> getCurso() {
-    return Candidato.instancia.getCurso();
+  String getCurso1() {
+    return Candidato.instancia.getCurso1();
   }
-
-  // setCurso2(String valor) {
-  //   Candidato.instancia.setCurso2(valor);
-  // }
-
-  // String getCurso2() {
-  //   return Candidato.instancia.getCurso2();
-  // }
 
   setCertificado(String valor) {
     Candidato.instancia.setCertificado(valor);
@@ -106,6 +120,10 @@ class CandidatoController {
   String getCertificado() {
     return Candidato.instancia.getCertificado();
   }
+
+  // String getFotoPerfil() {
+  //   return Candidato.instancia.getFotoPerfil();
+  // }
 
   // void eliminarCurso() {
   //   Candidato.instancia.eliminarCursos();
@@ -117,5 +135,13 @@ class CandidatoController {
 
   void reiniciar() {
     Candidato.instancia.reiniciar();
+  }
+
+  setFoto(String foto) {
+    Candidato.instancia.setFoto(foto);
+  }
+
+  String getFoto() {
+    return Candidato.instancia.getFoto();
   }
 }

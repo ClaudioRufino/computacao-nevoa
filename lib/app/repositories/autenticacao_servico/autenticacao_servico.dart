@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
+import 'package:sistema_inscricao/app/controllers/candidato_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 

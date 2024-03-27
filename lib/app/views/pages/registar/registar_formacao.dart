@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
-import 'package:sistema_inscricao/app/controller/registar/formacao_controller.dart';
-import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
+import 'package:sistema_inscricao/app/controllers/candidato_controller.dart';
+import 'package:sistema_inscricao/app/controllers/registar/formacao_controller.dart';
+import 'package:sistema_inscricao/app/repositories/autenticacao_servico/autenticacao_servico.dart';
 // import 'package:sistema_inscricao/app/servicos/dados_pessoais_api.dart';
-import 'package:sistema_inscricao/app/servicos/estado_global.dart';
+import 'package:sistema_inscricao/app/repositories/estado_global.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
 import 'package:sistema_inscricao/app/views/pages/login.dart';
@@ -548,11 +548,11 @@ class _RegistarFormacaoState extends State<RegistarFormacao> {
                                       // ignore: avoid_print
                                       if (curso1 != '' &&
                                           curso1 != 'Selecione o curso') {
-                                        candidatoController.setCurso(curso1);
+                                        candidatoController.setCurso1(curso1);
                                       }
                                       if (curso2 != '' &&
                                           curso2 != 'Selecione Segundo Curso') {
-                                        candidatoController.setCurso(curso2);
+                                        candidatoController.setCurso1(curso2);
                                       }
 
                                       // ignore: avoid_print

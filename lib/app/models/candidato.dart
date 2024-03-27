@@ -1,152 +1,155 @@
 import 'package:sistema_inscricao/app/models/usuario.dart';
 
-class Candidato extends User {
-  late String dataNascimento;
-  late String genero;
-  late String nomePai;
-  late String nomeMae;
-  late String escola;
-  late int media;
-  late String certificado;
-  late String emitidoEm;
-  late double anoConclusaoMedio;
-  late List<String> curso;
-  // late String curso2;
+class Candidato extends Usuario {
+  late String _dataNascimento;
+  late String _genero;
+  late String _nomePai;
+  late String _nomeMae;
+  late String _escola;
+  late int _media;
+  late String _certificado;
+  late String _fotoPerfil;
+  late String _emitidoEm;
+  late int _anoConclusaoMedio;
+  late String _curso1;
+  late String _curso2;
 
-  Candidato._({
-    required super.nome,
-    required super.email,
-    required super.senha,
-    required this.genero,
-    required this.escola,
-    required this.media,
-    required this.emitidoEm,
-    required this.nomePai,
-    required this.nomeMae,
-    required this.certificado,
-    required this.dataNascimento,
-    required this.curso,
-    // required this.curso2,
-  });
+  Candidato._(
+      {required super.nome,
+      required super.email,
+      required super.senha,
+      required String curso1,
+      required String curso2,
+      required int media,
+      required String genero,
+      required String escola,
+      required String emitidoEm,
+      required String nomePai,
+      required String nomeMae,
+      required String fotoPerfil,
+      required String certificado,
+      required String dataNascimento,
+      required int anoConclusaoMedio})
+      : _nomePai = nomePai,
+        _nomeMae = nomeMae,
+        _curso1 = curso1,
+        _curso2 = curso2,
+        _media = media,
+        _certificado = certificado,
+        _dataNascimento = dataNascimento,
+        _fotoPerfil = fotoPerfil,
+        _genero = genero,
+        _escola = escola,
+        _emitidoEm = emitidoEm,
+        _anoConclusaoMedio = anoConclusaoMedio;
 
   static final Candidato instancia = Candidato._(
-    nome: 'nome',
-    email: 'email',
-    senha: 'senha',
-    genero: 'genero',
-    escola: 'escola',
-    media: 0,
-    nomePai: 'nomePai',
-    nomeMae: 'nomeMae',
-    certificado: '',
-    emitidoEm: 'emitido',
-    curso: [],
-    // curso2: '',
-    dataNascimento: 'dataNascimento',
-  );
-
-  String getNome() {
-    return nome;
-  }
-
-  getEmail() {
-    return email;
-  }
-
-  String getSenha() {
-    return senha;
-  }
+      nome: 'nome',
+      email: 'email',
+      senha: 'senha',
+      genero: 'genero',
+      escola: 'escola',
+      nomePai: 'nomePai',
+      nomeMae: 'nomeMae',
+      emitidoEm: 'emitido',
+      fotoPerfil: '',
+      certificado: '',
+      curso1: '',
+      curso2: '',
+      media: 0,
+      dataNascimento: 'dataNascimento',
+      anoConclusaoMedio: 0);
 
   String getEscola() {
-    return escola;
+    return _escola;
   }
 
   int getMedia() {
-    return media;
+    return _media;
   }
 
   String getNomePai() {
-    return nomePai;
+    return _nomePai;
   }
 
   String getNomeMae() {
-    return nomeMae;
+    return _nomeMae;
   }
 
   String getEmitido() {
-    return emitidoEm;
+    return _emitidoEm;
   }
 
   String getCertificado() {
-    return certificado;
+    return _certificado;
   }
 
   String getDataNascimento() {
-    return dataNascimento;
+    return _dataNascimento;
   }
 
-  setNome(String nome) {
-    super.nome = nome;
+  String getAnoConclusaoMedio() {
+    return _anoConclusaoMedio.toString();
   }
 
-  setEmail(String email) {
-    this.email = email;
-  }
-
-  setSenha(String senha) {
-    this.senha = senha;
+  String getFoto() {
+    return _fotoPerfil;
   }
 
   setEscola(String escola) {
-    this.escola = escola;
+    _escola = escola;
   }
 
   setMedia(int valor) {
-    media = valor;
+    _media = valor;
   }
 
   setNomePai(String nome) {
-    nomePai = nome;
+    _nomePai = nome;
   }
 
   setNomeMae(String nome) {
-    nomeMae = nome;
+    _nomeMae = nome;
   }
 
   setDataNascimento(String data) {
-    dataNascimento = data;
+    _dataNascimento = data;
   }
 
   void setEmitido(String emitido) {
-    emitidoEm = emitido;
+    _emitidoEm = emitido;
   }
 
   void setCertificado(String valor) {
-    certificado = valor;
+    _certificado = valor;
   }
 
-  List<String> getCurso() {
-    return curso;
+  setFoto(String foto) {
+    _fotoPerfil = foto;
   }
 
-  void setCurso(String valor) {
-    curso.add(valor);
+  setCurso1(String valor) {
+    _curso1 = valor;
   }
 
-  // String getCurso2() {
-  //   return curso1;
-  // }
+  setCurso2(String valor) {
+    _curso2 = valor;
+  }
 
-  // void setCurso2(String valor) {
-  //   curso1 = valor;
-  // }
+  void setAnoConclusaoMedio(int valor) {
+    _anoConclusaoMedio = valor;
+  }
 
-  void eliminarCursos() {
-    curso = [];
+  String getCurso1() {
+    return _curso1;
+  }
+
+  String getCurso2() {
+    return _curso2;
   }
 
   int totalCurso() {
-    if (curso.length == 2) {
+    if (!_curso1.isNotEmpty && _curso2.isNotEmpty) {
       return 2;
     }
     return 1;
@@ -156,15 +159,34 @@ class Candidato extends User {
     nome = 'nome';
     email = 'email';
     senha = 'senha';
-    genero = 'genero';
-    escola = 'escola';
-    media = 0;
-    nomePai = 'nomePai';
-    nomeMae = 'nomeMae';
-    certificado = '';
-    emitidoEm = 'emitido';
-    curso = [];
-    // curso2 = '';
-    dataNascimento = 'dataNascimento';
+    _genero = 'genero';
+    _escola = 'escola';
+    _media = 0;
+    _nomePai = 'nomePai';
+    _nomeMae = 'nomeMae';
+    _certificado = '';
+    _emitidoEm = 'emitido';
+    _curso1 = '';
+    _curso2 = '';
+    _dataNascimento = 'dataNascimento';
+  }
+
+  // Método para converter a instância para um mapa
+  Map<String, dynamic> toMap() {
+    return {
+      'nome': nome,
+      'email': email,
+      'senha': senha,
+      'genero': _genero,
+      'escola': _escola,
+      'media': _media,
+      'nomePai': _nomePai,
+      'nomeMae': _nomeMae,
+      'certificado': _certificado,
+      'emitidoEm': _emitidoEm,
+      'curso1': _curso1,
+      'curso2': _curso2,
+      'dataNascimento': _dataNascimento,
+    };
   }
 }

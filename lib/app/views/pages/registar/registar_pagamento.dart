@@ -1,8 +1,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sistema_inscricao/app/controller/candidato_controller.dart';
-import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
+import 'package:sistema_inscricao/app/controllers/candidato_controller.dart';
+import 'package:sistema_inscricao/app/repositories/autenticacao_servico/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem.dart';
 import 'package:sistema_inscricao/app/views/components/menu_inscricao.dart';
 import 'package:file_picker/file_picker.dart';

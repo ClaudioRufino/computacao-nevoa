@@ -1,5 +1,10 @@
+// ignore_for_file: unused_import, avoid_print, unused_local_variable
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
+import 'package:sistema_inscricao/app/repositories/db_repository.dart';
+// import 'package:sistema_inscricao/app/servicos/autenticacao_servico/autenticacao_servico.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -9,7 +14,20 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
-  final AutenticacaoServico _authServico = AutenticacaoServico();
+  // final AutenticacaoServico _authServico = AutenticacaoServico();
+  DbRepository db = DbRepository();
+
+  late String idCandidato;
+
+  @override
+  void initState() {
+    super.initState();
+    var userCandidato = db.getCandidatoAtivo();
+    // print("Teste $teste");
+    userCandidato.then((user) {
+      idCandidato = user.uid;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +39,14 @@ class _SobreState extends State<Sobre> {
           height: 80,
           alignment: Alignment.bottomLeft,
           color: const Color.fromARGB(255, 24, 56, 97),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'ESTADO DE PAGAMENTO',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _authServico.sair();
-                  },
-                  child: const Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'ESTADO DE PAGAMENTO',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -52,13 +56,6 @@ class _SobreState extends State<Sobre> {
           width: 360,
           height: 120,
           decoration: const BoxDecoration(
-            // gradient: LinearGradient(
-            //     begin: Alignment.bottomLeft,
-            //     end: Alignment.bottomRight,
-            //     colors: [
-            //       Color.fromARGB(255, 221, 97, 88),
-            //       Color.fromARGB(255, 238, 112, 28)
-            //     ]),
             color: Colors.black12,
             borderRadius: BorderRadius.all(
               Radius.circular(14),

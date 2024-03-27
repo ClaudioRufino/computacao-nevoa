@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sistema_inscricao/app/servicos/estado_global.dart';
+import 'package:sistema_inscricao/app/repositories/estado_global.dart';
 
 class Usuario extends StatefulWidget {
   const Usuario({super.key});

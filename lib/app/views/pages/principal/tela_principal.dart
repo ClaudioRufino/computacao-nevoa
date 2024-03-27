@@ -29,8 +29,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         currentIndex: indice,
-        elevation: 10,
+        elevation: 0,
         backgroundColor: const Color.fromARGB(255, 20, 47, 82),
+        // landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
         onTap: (value) => {
           setState(
             () {
@@ -41,23 +42,20 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.home_outlined,
               color: Colors.white,
             ),
+            activeIcon: Icon(Icons.home),
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.info,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.info_outline, color: Colors.white),
+            activeIcon: Icon(Icons.info),
             label: 'Estado',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.person_outline, color: Colors.white),
+            activeIcon: Icon(Icons.person),
             label: 'Perfil',
           )
         ],

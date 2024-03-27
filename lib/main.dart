@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:sistema_inscricao/app/views/pages/home.dart';
 import 'package:sistema_inscricao/app/views/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:sistema_inscricao/app/views/teste.dart';
 import 'firebase_options.dart';
-// import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +20,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Login',
       home: LoginPage(),
-      // home: const Teste(),
-      // home: const Home(),
     );
   }
 }
