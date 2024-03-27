@@ -1,16 +1,10 @@
-# sistema_inscricao
+# sistema inscricao
 
-A new Flutter project.
+Esse projecto é um presente, ela me catapultou para o mundo mobile, usando a linguagem de programação Dart com o seu Framework Flutter.
+O App permite que usuários se cadastrem a qualquer hora e lugar de onde estiverem, evitando gastos desnecessários associados a transportes e o clássico problema de fila 
+desenvolvido por A.K. Erland em 1909.
+Para o armazenamento dos dados, usou-se o famoso, Firebase, pois ela oferece recursos bem interessantes, como sincronização em tempo real, etc.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
