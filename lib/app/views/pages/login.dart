@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem_login.dart';
-// import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 import 'package:sistema_inscricao/app/repositories/autenticacao_servico/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/pages/tela_principal.dart';
 // import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
@@ -173,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
 
                               errorBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
                               ),
                               focusedErrorBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.blueAccent,
                                 fontSize: 18,
                                 fontStyle: FontStyle.italic),
                           ),

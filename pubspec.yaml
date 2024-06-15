@@ -61,6 +61,8 @@ flutter:
       - images/isutic.jpg
       - images/login-cloud.png
       - images/logo.png
+      - images/local.png
+      - images/nonuvem.gif
 
   fonts:
     - family: Montserrat

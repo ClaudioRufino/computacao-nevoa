@@ -19,6 +19,32 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: Container(
+              width: 300,
+              height: 230,
+              color: Colors.white,
+              child: Image.asset(
+                'images/logo.png',
+              ),
+            ),
+          ),
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'INSTIC',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          )
+        ],
+        backgroundColor: Colors.blue,
+      ),
       body: IndexedStack(
         index: indice,
         children: telas,
