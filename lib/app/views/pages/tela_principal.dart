@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sistema_inscricao/app/views/pages/principal/home.dart';
-import 'package:sistema_inscricao/app/views/pages/principal/perfil.dart';
-import 'package:sistema_inscricao/app/views/pages/principal/estado.dart';
+import 'package:sistema_inscricao/app/views/pages/principal_pages/home.dart';
+import 'package:sistema_inscricao/app/views/pages/principal_pages/perfil.dart';
+import 'package:sistema_inscricao/app/views/pages/principal_pages/estado.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -15,12 +15,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   final telas = [const Home(), const Sobre(), const Perfil()];
 
-  // @override
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 24, 56, 97),
+      backgroundColor: Colors.white,
       body: IndexedStack(
         index: indice,
         children: telas,
@@ -29,9 +27,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         currentIndex: indice,
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 20, 47, 82),
-        // landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+        backgroundColor: const Color.fromARGB(255, 27, 88, 169),
+        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
         onTap: (value) => {
           setState(
             () {
@@ -44,19 +41,28 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             icon: Icon(
               Icons.home_outlined,
               color: Colors.white,
+              size: 33,
             ),
             activeIcon: Icon(Icons.home),
-            label: 'Inicio',
+            label: 'Local',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline, color: Colors.white),
-            activeIcon: Icon(Icons.info),
-            label: 'Estado',
+            icon: Icon(
+              Icons.border_inner,
+              color: Colors.white,
+              size: 33,
+            ),
+            activeIcon: Icon(Icons.border_all),
+            label: 'Edge',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline, color: Colors.white),
-            activeIcon: Icon(Icons.person),
-            label: 'Perfil',
+            icon: Icon(
+              Icons.cloud_done_outlined,
+              color: Colors.white,
+              size: 33,
+            ),
+            activeIcon: Icon(Icons.cloud),
+            label: 'Cloud',
           )
         ],
       ),

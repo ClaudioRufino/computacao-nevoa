@@ -37,7 +37,7 @@ class _SobreState extends State<Sobre> {
         Container(
           width: double.infinity,
           height: 80,
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.bottomCenter,
           color: const Color.fromARGB(255, 24, 56, 97),
           child: const Padding(
             padding: EdgeInsets.all(10),
@@ -55,27 +55,22 @@ class _SobreState extends State<Sobre> {
         Container(
           width: 360,
           height: 120,
+          alignment: Alignment.center,
           decoration: const BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.all(
               Radius.circular(14),
             ),
           ),
-          child: ListView(
-            children: const [
-              ListTile(
-                title: Center(
-                  child: Text(
-                    'ESTADO DE PEGAMENTO',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                ),
-                subtitle: Center(
-                    child: Text('PENDENTE',
-                        style:
-                            TextStyle(fontSize: 16, color: Colors.redAccent))),
-              ),
-            ],
+          child: const ListTile(
+            title: Text(
+              'MEU ESTADO',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+            subtitle: Text('PENDENTE',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.redAccent)),
           ),
         ),
       ]),

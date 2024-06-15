@@ -62,7 +62,7 @@ class DbRepository extends DB {
     User? usuario = auth.currentUser;
     String idUsuario = usuario!.uid;
 
-    await firestore.collection('candidatos').doc(idUsuario).update({
+    await firestore.collection('usuarios').doc(idUsuario).update({
       campo: valor,
     });
     print('Atualizado com sucesso');

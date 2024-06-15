@@ -17,9 +17,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Login',
-      home: LoginPage(),
+      home: const LoginPage(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors
+                .transparent, // Define a cor de splash globalmente como transparente
+          ),
+          child: child!,
+        );
+      },
     );
   }
 }

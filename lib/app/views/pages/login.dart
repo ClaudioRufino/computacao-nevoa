@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem_login.dart';
 // import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 import 'package:sistema_inscricao/app/repositories/autenticacao_servico/autenticacao_servico.dart';
-import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
-import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
+import 'package:sistema_inscricao/app/views/pages/tela_principal.dart';
+// import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,61 +29,31 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 24, 56, 97),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 24, 56, 97),
-          title: SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Container(
-                    width: 50,
-                    height: 220,
-                    color: Colors.white,
-                    child: Image.asset(
-                      'images/logo.png',
-                    ),
-                  ),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Container(
+                width: 80,
+                height: 220,
+                color: Colors.white,
+                child: Image.asset(
+                  'images/logo.png',
                 ),
-                SizedBox(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Instic-2024',
-                        textAlign: TextAlign.right,
-                        style: GoogleFonts.ubuntu(
-                          color: Colors.white60,
-                          fontSize: 14,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (() {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const RegistarPessoal()));
-                        }),
-                        child: Text(
-                          'Registar',
-                          style: GoogleFonts.ubuntu(
-                            color: Colors.white,
-                            fontSize: 14,
-                            textStyle: const TextStyle(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'T.E 2',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            )
+          ],
+          backgroundColor: Colors.blue,
         ),
         body: SizedBox(
           width: double.infinity,
@@ -94,43 +64,25 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 240,
                 child: Image.asset(
-                  'images/isutic.jpg',
+                  'images/login-cloud.png',
                   width: double.infinity,
                   height: double.infinity,
                 ),
               ),
-              Container(
+              SizedBox(
                 width: double.infinity,
-                height: 410, // 400
-                decoration: const BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [
-                      Color.fromARGB(255, 12, 75, 156),
-                      Color.fromARGB(255, 24, 56, 97)
-                    ],
-                  ),
-                ),
+                height: 400, // 400
                 child: Center(
                   child: SingleChildScrollView(
                     child: Form(
                       key: _keyForm,
                       child: Column(children: [
-                        ListTile(
-                          leading: const Icon(
-                            Icons.settings_accessibility,
-                            color: Colors.white,
-                            size: 35,
-                          ),
-                          title: Text(
-                            'ACESSO RESTRITO.',
-                            style: GoogleFonts.playfairDisplay(
-                                color: Colors.white, fontSize: 16),
-                          ),
-                          subtitle: Text(
-                            'Por favor, faça o login.',
-                            style: GoogleFonts.playfairDisplay(
-                                color: Colors.white),
-                          ),
+                        const ListTile(
+                            title: Center(
+                          child: Text('ACESSO RESTRITO',
+                              style: TextStyle(
+                                  color: Colors.blueAccent, fontSize: 22)),
+                        )
                         ),
                         SizedBox(
                           width: 370,
@@ -150,22 +102,24 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: const InputDecoration(
                               labelText: 'EMAIL',
                               labelStyle:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                                  TextStyle(
+                                  color: Colors.blueAccent, fontSize: 16),
                               alignLabelWithHint: true, // Centraliza o hintText
 
                               enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white60),
+                                borderSide: BorderSide(color: Colors.lightBlue),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
                               ),
 
                               errorBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Colors.lightBlue),
                               ),
                             ),
                             style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.blueAccent,
                                 fontSize: 18,
                                 fontStyle: FontStyle.italic),
                           ),
@@ -193,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _obscureText
                                         ? Icons.visibility_off
                                         : Icons.visibility,
-                                    color: Colors.white60),
+                                    color: Colors.blueAccent),
                                 onPressed: () {
                                   setState(() {
                                     _obscureText = !_obscureText;
@@ -202,19 +156,20 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               labelText: 'PALAVRA-CHAVE',
                               labelStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 12),
+                                  color: Colors.blueAccent, fontSize: 16),
                               alignLabelWithHint: true, // Centraliza o hintText
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               hintStyle: GoogleFonts.quicksand(
-                                  color: Colors.white,
+                                  color: Colors.lightBlue,
                                   fontStyle: FontStyle.italic),
 
                               enabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white60),
+                                borderSide: BorderSide(color: Colors.lightBlue),
                               ),
                               focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
                               ),
 
                               errorBorder: const UnderlineInputBorder(
@@ -297,11 +252,11 @@ class _LoginPageState extends State<LoginPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                backgroundColor: Colors.white),
+                                backgroundColor: Colors.blue),
                             child: const Text(
                               'ENTRAR',
                               style:
-                                  TextStyle(color: Colors.blue, fontSize: 12),
+                                  TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ),
                         ),
@@ -313,7 +268,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: const Text(
                             'RECUPERAR CREDENCIAIS',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 14),
                           ),
                         ),
                       ]),
