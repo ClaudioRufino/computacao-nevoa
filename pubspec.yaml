@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^2.1.2
   pdf: ^3.10.8
   flutter_pdfview: ^1.2.7
+  shared_preferences: ^2.2.3
  
 
 dev_dependencies:
@@ -62,7 +63,9 @@ flutter:
       - images/login-cloud.png
       - images/logo.png
       - images/local.png
-      - images/nonuvem.gif
+      - images/cloud.png
+      - images/edge.png
+      - images/fog.png
 
   fonts:
     - family: Montserrat

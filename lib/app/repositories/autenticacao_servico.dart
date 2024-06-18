@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sistema_inscricao/app/controllers/candidato_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:sistema_inscricao/app/views/pages/principal/tela_principal.dart';
 
 class AutenticacaoServico {
   // Crie uma instancia para o Firebase.auth
@@ -19,14 +18,6 @@ class AutenticacaoServico {
 
       await firestore.collection('usuarios').doc(idUser).set({
         'nome': 'audilia', //cand.getNome(),
-        'escola': cand.getEscola(),
-        'media': cand.getMedia(),
-        'nomePai': 'Rufino', //cand.getNomePai(),
-        'nomeMae': 'Mosalina', // cand.getNomeMae(),
-        'certificado': cand.getCertificado(),
-        'emitidoEm': '10-12-32', //cand.getEmitido(),
-        'curso': ['ingles', 'dadiva'],
-        'dataNascimento': '1998-05-15',
       });
 
       // ignore: avoid_print

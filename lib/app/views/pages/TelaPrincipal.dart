@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sistema_inscricao/app/views/pages/principal_pages/home.dart';
-import 'package:sistema_inscricao/app/views/pages/principal_pages/perfil.dart';
-import 'package:sistema_inscricao/app/views/pages/principal_pages/estado.dart';
+import 'package:sistema_inscricao/app/views/pages/cloud.dart';
+import 'package:sistema_inscricao/app/views/pages/edge.dart';
+import 'package:sistema_inscricao/app/views/pages/local.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -13,7 +13,7 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   int indice = 0;
 
-  final telas = [const Home(), const Sobre(), const Perfil()];
+  final telas = [const Local(), const Edge(), const Cloud()];
 
   @override
   Widget build(BuildContext context) {

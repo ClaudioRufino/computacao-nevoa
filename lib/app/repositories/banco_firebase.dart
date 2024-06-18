@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sistema_inscricao/app/interfaces/bd.dart';
 import 'package:sistema_inscricao/app/models/candidato.dart';
 
-class DbRepository extends DB {
+class BancoFirebase extends BD {
   // O nosso banco de dados será representado pelo Firestore
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -51,9 +51,22 @@ class DbRepository extends DB {
     }
   }
 
-  @override
-  Future<User> getCandidatoAtivo() async {
-    return auth.currentUser!;
+  User? getUserAtivo() {
+    return auth.currentUser;
+  }
+
+  Future<bool> addCampo({required String valor}) async {
+    var usuarioAtivo = getUserAtivo();
+
+    if (usuarioAtivo != null) {
+      var idUsuarioAtivo = usuarioAtivo.uid;
+      await firestore
+          .collection('nome')
+          .doc(idUsuarioAtivo)
+          .set({'valor': valor});
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -68,7 +81,6 @@ class DbRepository extends DB {
     print('Atualizado com sucesso');
   }
 
-  @override
   Future<String> getFotoPerfil() async {
     User? usuario = auth.currentUser;
     String idUsuario = usuario!.uid;

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sistema_inscricao/app/repositories/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem_login.dart';
-import 'package:sistema_inscricao/app/repositories/autenticacao_servico/autenticacao_servico.dart';
-import 'package:sistema_inscricao/app/views/pages/tela_principal.dart';
-// import 'package:sistema_inscricao/app/views/pages/registar/registar_pessoal.dart';
+import 'package:sistema_inscricao/app/views/pages/TelaPrincipal.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -47,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'T.E 2',
+                'INSTIC-2024',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             )
@@ -282,6 +280,7 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 }
+
 
 Stream<int> tempo() async* {
   int i;
