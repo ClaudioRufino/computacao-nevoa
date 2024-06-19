@@ -8,20 +8,20 @@ class BancoLocal extends BD {
   @override
   Future<void> addCandidato(Candidato candidato) async {}
 
-  Future<bool> addNome({required Candidato candidato}) async {
+  Future<bool> addNome(String nome) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('nome', candidato.nome);
+    await prefs.setString('nome', nome);
     return true;
   }
 
-  Future<String> getNome({required Candidato candidato}) async {
+  Future<String> getNome() async {
     final prefs = await SharedPreferences.getInstance();
     final String? nome = prefs.getString('nome');
 
     if (nome != null) {
       return nome;
     }
-    return "";
+    return "Sem nome a mostrar";
   }
 
   @override

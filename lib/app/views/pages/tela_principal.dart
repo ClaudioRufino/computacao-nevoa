@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_inscricao/app/repositories/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/pages/cloud.dart';
 import 'package:sistema_inscricao/app/views/pages/edge.dart';
 import 'package:sistema_inscricao/app/views/pages/local.dart';
+import 'package:sistema_inscricao/app/views/pages/login.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -11,6 +13,7 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
+  AutenticacaoServico authServico = AutenticacaoServico();
   int indice = 0;
 
   final telas = [const Local(), const Edge(), const Cloud()];
@@ -34,14 +37,30 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             ),
           ),
         ),
-        actions: const [
-          Padding(
+        actions: [
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'INSTIC',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              'INSTIC-2024',
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+                onPressed: () {
+                  authServico.sair();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                )),
+          ),
         ],
         backgroundColor: Colors.blue,
       ),

@@ -1,7 +1,3 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, unused_import
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:sistema_inscricao/app/views/components/template.dart';

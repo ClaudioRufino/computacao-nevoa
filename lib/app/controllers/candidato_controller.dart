@@ -6,9 +6,9 @@ import 'package:sistema_inscricao/app/repositories/banco_local.dart';
 import 'package:sistema_inscricao/app/repositories/banco_mysql.dart';
 
 class CandidatoController {
-  late BancoFirebase bancoFirebase;
-  late BancoMysql bancoMysql;
-  late BancoLocal bancoLocal;
+  late BancoFirebase bancoFirebase = BancoFirebase();
+  late BancoMysql bancoMysql = BancoMysql();
+  late BancoLocal bancoLocal = BancoLocal();
   // ignore: prefer_typing_uninitialized_variables
   late var banco;
 
@@ -18,25 +18,21 @@ class CandidatoController {
     }
     else if (tipoBanco == 'mysql') {
       banco = bancoMysql;
-    } else {
+    } else if (tipoBanco == 'local') {
       banco = bancoLocal;
     }
   }
 
-  Future<bool> addNome({required String nome}) {
-    return banco.addCampo(valor: nome);
+  Future<bool> addNome(String nome) async {
+    return banco.addNome(nome);
   }
 
-  adicionarCandidato() {}
-
-  removerCandidato() {}
+  Future<String> getNome() async {
+    return banco.getNome();
+  }
 
   setNome(String nome) {
     Candidato.instancia.setNome(nome);
-  }
-
-  String getNome() {
-    return Candidato.instancia.getNome();
   }
 
   setEmail(String email) {

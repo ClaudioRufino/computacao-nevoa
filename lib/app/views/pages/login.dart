@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sistema_inscricao/app/repositories/autenticacao_servico.dart';
 import 'package:sistema_inscricao/app/views/components/mensagem_login.dart';
-import 'package:sistema_inscricao/app/views/pages/TelaPrincipal.dart';
+import 'package:sistema_inscricao/app/views/pages/tela_principal.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

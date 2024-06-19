@@ -55,7 +55,7 @@ class BancoFirebase extends BD {
     return auth.currentUser;
   }
 
-  Future<bool> addCampo({required String valor}) async {
+  Future<bool> addNome(String valor) async {
     var usuarioAtivo = getUserAtivo();
 
     if (usuarioAtivo != null) {
